@@ -1,4 +1,5 @@
 import Chatbot from "../components/Chatbot";
+// import "../styles/globals.css";
 
 export default function ChatbotPage() {
   return (
