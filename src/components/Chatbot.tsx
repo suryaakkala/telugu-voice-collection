@@ -3,7 +3,6 @@ import React, { useState, useRef } from 'react';
 interface Message {
   text: string;
   audioUrl?: string;
-  teluguTranscript?: string;
   sender: 'user' | 'bot';
 }
 
@@ -18,7 +17,7 @@ const Chatbot: React.FC = () => {
     if (!input.trim()) return;
 
     const userMessage: Message = { text: input, sender: 'user' };
-    setMessages([...messages, userMessage]);
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     try {
       const response = await fetch('/api/chat', {
@@ -31,7 +30,6 @@ const Chatbot: React.FC = () => {
       const botMessage: Message = {
         text: data.response,
         audioUrl: data.audioUrl,
-        teluguTranscript: data.teluguTranscript,
         sender: 'bot',
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -46,6 +44,7 @@ const Chatbot: React.FC = () => {
     if (!file) return;
 
     const formData = new FormData();
+    formData.append('type', 'file');
     formData.append('file', file);
 
     try {
@@ -58,7 +57,6 @@ const Chatbot: React.FC = () => {
       const botMessage: Message = {
         text: data.response,
         audioUrl: data.audioUrl,
-        teluguTranscript: data.teluguTranscript,
         sender: 'bot',
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -69,13 +67,11 @@ const Chatbot: React.FC = () => {
 
   const toggleRecording = async () => {
     if (isRecording) {
-      // Stop recording
       if (mediaRecorderRef.current) {
         mediaRecorderRef.current.stop();
         setIsRecording(false);
       }
     } else {
-      // Start recording
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const mediaRecorder = new MediaRecorder(stream);
@@ -88,7 +84,8 @@ const Chatbot: React.FC = () => {
         mediaRecorder.onstop = async () => {
           const audioBlob = new Blob(chunks, { type: 'audio/webm' });
           const formData = new FormData();
-          formData.append('file', audioBlob);
+          formData.append('type', 'audio');
+          formData.append('file', audioBlob, 'recorded_audio.webm');
 
           try {
             const response = await fetch('/api/chat', {
@@ -100,7 +97,6 @@ const Chatbot: React.FC = () => {
             const botMessage: Message = {
               text: data.response,
               audioUrl: data.audioUrl,
-              teluguTranscript: data.teluguTranscript,
               sender: 'bot',
             };
             setMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -118,130 +114,100 @@ const Chatbot: React.FC = () => {
   };
 
   return (
-    <div className="chatbot-container">
-      <div className="message-container">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`message ${msg.sender === 'user' ? 'user-message' : 'bot-message'}`}
-          >
-            {msg.text}
-            {msg.audioUrl && (
-              <audio controls src={msg.audioUrl} className="audio-player">
-                Your browser does not support the audio element.
-              </audio>
-            )}
-            {msg.teluguTranscript && (
-              <div className="telugu-transcript">Telugu: {msg.teluguTranscript}</div>
-            )}
-          </div>
-        ))}
+    <div className="chat-container">
+  <div className="messages">
+    {messages.map((msg, index) => (
+      <div key={index} className={`message ${msg.sender}`}>
+        <p>{msg.text}</p>
+        {msg.audioUrl && <audio controls src={msg.audioUrl}></audio>}
       </div>
-      <div className="input-container">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type a message..."
-          className="text-input"
-        />
-        <button onClick={sendMessage} className="send-button">
-          Send
-        </button>
-        <button onClick={toggleRecording} className={`record-button ${isRecording ? 'recording' : ''}`}>
-          {isRecording ? 'Stop' : 'Record'}
-        </button>
-      </div>
-      <div className="file-upload-container">
-        <input type="file" onChange={handleFileUpload} className="file-upload" />
-      </div>
+    ))}
+  </div>
+  <div className="input-container">
+    <input
+      type="text"
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+      placeholder="Type a message..."
+    />
+    <button onClick={sendMessage}>Send</button>
+    <button onClick={toggleRecording}>{isRecording ? 'Stop' : 'Record'}</button>
+    <input type="file" onChange={handleFileUpload} />
+  </div>
+  <style jsx>{`
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 15px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background-color: #f7f7f7;
+    }
+    .message {
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+    .message.user {
+      align-self: flex-end;
+      text-align: right;
+      color: #ffffff;
+      background-color: #4a90e2;
+    }
+    .message.bot {
+      align-self: flex-start;
+      text-align: left;
+      color: #ffffff;
+      background-color: #50c878;
+    }
+    .input-container {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .input-container input[type='text'] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .input-container button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      background-color: #4a90e2;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .input-container button:hover {
+      background-color: #357abd;
+    }
+    .input-container button:active {
+      background-color: #28578a;
+    }
+    .input-container input[type='file'] {
+      border: none;
+      font-size: 14px;
+    }
+  `}</style>
+</div>
 
-      <style jsx>{`
-        .chatbot-container {
-          background-color: white;
-          border-radius: 8px;
-          padding: 16px;
-          max-width: 400px;
-          margin: 0 auto;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .message-container {
-          height: 300px;
-          overflow-y: auto;
-          margin-bottom: 16px;
-        }
-
-        .message {
-          padding: 8px;
-          border-radius: 8px;
-          margin-bottom: 8px;
-        }
-
-        .user-message {
-          background-color: #3b82f6;
-          color: white;
-          text-align: right;
-        }
-
-        .bot-message {
-          background-color: #e5e7eb;
-          color: black;
-        }
-
-        .audio-player {
-          margin-top: 8px;
-          display: block;
-        }
-
-        .telugu-transcript {
-          margin-top: 4px;
-          font-size: 0.9em;
-          color: #4b5563;
-        }
-
-        .input-container {
-          display: flex;
-          gap: 8px;
-        }
-
-        .text-input {
-          flex: 1;
-          padding: 8px;
-          border: 1px solid #d1d5db;
-          border-radius: 8px;
-        }
-
-        .send-button,
-        .record-button {
-          padding: 8px 16px;
-          border: none;
-          border-radius: 8px;
-          color: white;
-          cursor: pointer;
-        }
-
-        .send-button {
-          background-color: #3b82f6;
-        }
-
-        .record-button {
-          background-color: #10b981;
-        }
-
-        .record-button.recording {
-          background-color: #ef4444;
-        }
-
-        .file-upload-container {
-          margin-top: 16px;
-        }
-
-        .file-upload {
-          width: 100%;
-        }
-      `}</style>
-    </div>
   );
 };
 
