@@ -15,8 +15,15 @@ export default function LandingPage() {
 
   const handleQuizNavigation = () => {
     router.push("/QuizGenerator");
+  };
+
+  const handleVoiceNavigation = () => {
+    router.push("/VoiceInputPractice");
   }
 
+  const handleTextMatchingNavigation = () => {
+    router.push("/TextMatching");
+  }
 
   return (
     <div style={{
@@ -53,6 +60,9 @@ export default function LandingPage() {
             <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
               <Button onClick={handleChatbotNavigation} style={{ padding: '12px 24px', fontSize: '18px', background: 'linear-gradient(90deg, #007bff, #0056b3)', color: 'white', borderRadius: '16px', boxShadow: '0px 4px 8px rgba(0,0,0,0.2)' }}>Get Started</Button>
               <Button onClick={handleQuizNavigation} style={{ padding: '12px 24px', fontSize: '18px', background: 'linear-gradient(90deg, #007bff, #0056b3)', color: 'white', borderRadius: '16px', boxShadow: '0px 4px 8px rgba(0,0,0,0.2)' }}>QUIZ</Button>
+              <Button onClick={handleVoiceNavigation} style={{ padding: '12px 24px', fontSize: '18px', background: 'linear-gradient(90deg, #007bff, #0056b3)', color: 'white', borderRadius: '16px', boxShadow: '0px 4px 8px rgba(0,0,0,0.2)' }}>Voice Input Practice</Button>
+              <Button onClick={handleTextMatchingNavigation} style={{ padding: '12px 24px', fontSize: '18px', background: 'linear-gradient(90deg, #007bff, #0056b3)', color: 'white', borderRadius: '16px', boxShadow: '0px 4px 8px rgba(0,0,0,0.2)' }}>Text Matcher</Button>
+              
               <Button variant="outline" style={{ padding: '12px 24px', fontSize: '18px', border: '2px solid #007bff', background: 'white', color: '#007bff', borderRadius: '16px', boxShadow: '0px 4px 8px rgba(0,0,0,0.2)' }}>Learn More</Button>
             </div>
           </div>
