@@ -17,4 +17,6 @@ You can start editing the chat page by modifying `src/components/Chatbot.tsx`. T
 
 Apis are in `src/pages/api/chat.ts`. 
 
-
+## TODO:
+1. Add css for chat page
+2. need to add activities `Role-Play, Voice Input Practice, Speaking Practice, Quiz, Audio Practice`.
