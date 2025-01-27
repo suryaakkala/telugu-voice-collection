@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 
-// Define a type for messages
 interface Message {
   text: string;
   audioUrl?: string;
@@ -25,7 +24,7 @@ const Chatbot: React.FC = () => {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ type: 'text', prompt: input }),
       });
       const data = await response.json();
 
@@ -119,56 +118,129 @@ const Chatbot: React.FC = () => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
-      <div className="h-64 overflow-y-auto mb-4">
+    <div className="chatbot-container">
+      <div className="message-container">
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`mb-2 p-2 rounded-lg ${
-              msg.sender === 'user' ? 'bg-blue-500 text-white self-end' : 'bg-gray-300'
-            }`}
+            className={`message ${msg.sender === 'user' ? 'user-message' : 'bot-message'}`}
           >
             {msg.text}
             {msg.audioUrl && (
-              <audio controls src={msg.audioUrl} className="mt-2">
+              <audio controls src={msg.audioUrl} className="audio-player">
                 Your browser does not support the audio element.
               </audio>
             )}
             {msg.teluguTranscript && (
-              <div className="mt-2 text-sm text-gray-700">Telugu: {msg.teluguTranscript}</div>
+              <div className="telugu-transcript">Telugu: {msg.teluguTranscript}</div>
             )}
           </div>
         ))}
       </div>
-      <div className="flex space-x-2">
+      <div className="input-container">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type a message..."
-          aria-label="Chat input"
-          className="flex-1 p-2 border rounded-lg"
+          className="text-input"
         />
-        <button onClick={sendMessage} className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+        <button onClick={sendMessage} className="send-button">
           Send
         </button>
-        <button
-          onClick={toggleRecording}
-          className={`px-4 py-2 rounded-lg ${
-            isRecording ? 'bg-red-500 text-white' : 'bg-green-500 text-white'
-          }`}
-        >
+        <button onClick={toggleRecording} className={`record-button ${isRecording ? 'recording' : ''}`}>
           {isRecording ? 'Stop' : 'Record'}
         </button>
       </div>
-      <div className="mt-4">
-        <input
-          type="file"
-          onChange={handleFileUpload}
-          aria-label="Upload a file"
-          className="block w-full"
-        />
+      <div className="file-upload-container">
+        <input type="file" onChange={handleFileUpload} className="file-upload" />
       </div>
+
+      <style jsx>{`
+        .chatbot-container {
+          background-color: white;
+          border-radius: 8px;
+          padding: 16px;
+          max-width: 400px;
+          margin: 0 auto;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-container {
+          height: 300px;
+          overflow-y: auto;
+          margin-bottom: 16px;
+        }
+
+        .message {
+          padding: 8px;
+          border-radius: 8px;
+          margin-bottom: 8px;
+        }
+
+        .user-message {
+          background-color: #3b82f6;
+          color: white;
+          text-align: right;
+        }
+
+        .bot-message {
+          background-color: #e5e7eb;
+          color: black;
+        }
+
+        .audio-player {
+          margin-top: 8px;
+          display: block;
+        }
+
+        .telugu-transcript {
+          margin-top: 4px;
+          font-size: 0.9em;
+          color: #4b5563;
+        }
+
+        .input-container {
+          display: flex;
+          gap: 8px;
+        }
+
+        .text-input {
+          flex: 1;
+          padding: 8px;
+          border: 1px solid #d1d5db;
+          border-radius: 8px;
+        }
+
+        .send-button,
+        .record-button {
+          padding: 8px 16px;
+          border: none;
+          border-radius: 8px;
+          color: white;
+          cursor: pointer;
+        }
+
+        .send-button {
+          background-color: #3b82f6;
+        }
+
+        .record-button {
+          background-color: #10b981;
+        }
+
+        .record-button.recording {
+          background-color: #ef4444;
+        }
+
+        .file-upload-container {
+          margin-top: 16px;
+        }
+
+        .file-upload {
+          width: 100%;
+        }
+      `}</style>
     </div>
   );
 };
