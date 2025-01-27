@@ -13,9 +13,9 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the chat page by modifying `src/components/Chatbot.tsx`. The page auto-updates as you edit the file.
+You can start editing the chat pages by modifying `src/components/`. The page auto-updates as you edit the file.
 
-Apis are in `src/pages/api/chat.ts`. 
+Api for chat is in `src/pages/api/chat.ts`. 
 
 ## TODO:
 1. Modify css for `chat page,  Voice Input Practice,  Quiz, TextMatchingActivity`.
