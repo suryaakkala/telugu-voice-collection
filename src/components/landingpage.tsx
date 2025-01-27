@@ -13,6 +13,11 @@ export default function LandingPage() {
     router.push("/chatbot");
   };
 
+  const handleQuizNavigation = () => {
+    router.push("/QuizGenerator");
+  }
+
+
   return (
     <div style={{
       display: 'flex',
@@ -47,6 +52,7 @@ export default function LandingPage() {
             <p style={{ color: '#343a40', fontSize: '20px', marginBottom: '32px' }}>Experience seamless conversations in Telugu with our intuitive AI chatbot.</p>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
               <Button onClick={handleChatbotNavigation} style={{ padding: '12px 24px', fontSize: '18px', background: 'linear-gradient(90deg, #007bff, #0056b3)', color: 'white', borderRadius: '16px', boxShadow: '0px 4px 8px rgba(0,0,0,0.2)' }}>Get Started</Button>
+              <Button onClick={handleQuizNavigation} style={{ padding: '12px 24px', fontSize: '18px', background: 'linear-gradient(90deg, #007bff, #0056b3)', color: 'white', borderRadius: '16px', boxShadow: '0px 4px 8px rgba(0,0,0,0.2)' }}>QUIZ</Button>
               <Button variant="outline" style={{ padding: '12px 24px', fontSize: '18px', border: '2px solid #007bff', background: 'white', color: '#007bff', borderRadius: '16px', boxShadow: '0px 4px 8px rgba(0,0,0,0.2)' }}>Learn More</Button>
             </div>
           </div>
@@ -125,7 +131,7 @@ export default function LandingPage() {
             <p style={{ color: '#6c757d', fontSize: '20px' }}>We're passionate about bridging language barriers and making technology accessible to Telugu speakers. Our AI-powered chatbot is designed to provide seamless, natural conversations in Telugu, helping users connect, learn, and get assistance in their native language.</p>
           </div>
         </section>
-        <section id="contact" style={{ width: '100%', padding: '48px 0', backgroundImage: 'url(https://img.freepik.com/free-photo/vintage-pink-telephone-composition_23-2148913955.jpg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', color: 'white' }}>
+        {/* <section id="contact" style={{ width: '100%', padding: '48px 0', backgroundImage: 'url(https://img.freepik.com/free-photo/vintage-pink-telephone-composition_23-2148913955.jpg)', backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', color: 'white' }}>
           <div style={{ maxWidth: '500px', margin: '0 auto', padding: '0 16px', background: 'rgba(52, 58, 64, 0.9)', borderRadius: '16px' }}>
             <h2 style={{ fontSize: '40px', fontWeight: 'bold', marginBottom: '32px', textAlign: 'center', color: '#007bff' }}>Contact Us</h2>
             <form style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -144,7 +150,7 @@ export default function LandingPage() {
               <Button style={{ padding: '12px', borderRadius: '8px', background: 'linear-gradient(90deg, #007bff, #0056b3)', color: 'white', fontWeight: 'bold', boxShadow: '0px 4px 8px rgba(0,0,0,0.2)' }}>Send Message</Button>
             </form>
           </div>
-        </section>
+        </section> */}
       </main>
       <footer style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '24px 16px', borderTop: '2px solid #dee2e6', background: 'linear-gradient(90deg, #e9ecef, #f8f9fa)' }}>
         <p style={{ fontSize: '14px', color: '#6c757d' }}>© 2024 Telugu Chat Bot. All rights reserved.</p>
