@@ -13,35 +13,6 @@ const TextMatchingActivity: React.FC = () => {
   );
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch matching pairs from the API
-  const fetchMatchingPairs = async () => {
-    try {
-      const response = await fetch(
-        "https://61zfnp3s-5000.inc1.devtunnels.ms/text-matching-activity",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            main_topic: "Basic Vocabulary",
-            difficulty: "Beginner",
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch matching pairs: ${response.statusText}`);
-      }
-
-      const data: MatchingPair[] = await response.json();
-      setPairs(data);
-      setColumnB(shuffleArray(data.map((pair) => pair["Column B"])));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An unknown error occurred.");
-    }
-  };
-
   // Shuffle an array (for randomizing Column B)
   const shuffleArray = (array: string[]) => {
     return array
@@ -50,40 +21,35 @@ const TextMatchingActivity: React.FC = () => {
       .map(({ item }) => item);
   };
 
-  // Fetch pairs on component mount
   useEffect(() => {
-    fetchMatchingPairs();
+    // Replace API call with hardcoded data for testing
+    const samplePairs = [
+      {
+        "Column A": "1) Apple",
+        "Column B": "A) పండు",
+      },
+      {
+        "Column A": "2) Book",
+        "Column B": "B) పుస్తకం",
+      },
+      {
+        "Column A": "3) Chair",
+        "Column B": "C) కూర్చీ",
+      },
+      {
+        "Column A": "4) Tree",
+        "Column B": "D) చెట్టు",
+      },
+      {
+        "Column A": "5) Water",
+        "Column B": "E) నీరు",
+      },
+    ];
+
+    setPairs(samplePairs); // Set the hardcoded data
+    setColumnB(shuffleArray(samplePairs.map((pair) => pair["Column B"]))); // Populate Column B
   }, []);
 
-// useEffect(() => {
-//     // Replace API call with hardcoded data for testing
-//     const samplePairs = [
-//       {
-//         "Column A": "1) Apple",
-//         "Column B": "A) పండు",
-//       },
-//       {
-//         "Column A": "2) Book",
-//         "Column B": "B) పుస్తకం",
-//       },
-//       {
-//         "Column A": "3) Chair",
-//         "Column B": "C) కూర్చీ",
-//       },
-//       {
-//         "Column A": "4) Tree",
-//         "Column B": "D) చెట్టు",
-//       },
-//       {
-//         "Column A": "5) Water",
-//         "Column B": "E) నీరు",
-//       },
-//     ];
-  
-//     setPairs(samplePairs); // Set the hardcoded data
-//     setColumnB(samplePairs.map((pair) => pair["Column B"])); // Populate Column B
-//   }, []);
-  
   // Handle selecting a match
   const handleMatch = (colA: string, colB: string) => {
     const updatedMatches = new Map(selectedMatches);
@@ -118,6 +84,31 @@ const TextMatchingActivity: React.FC = () => {
               </div>
             ))}
           </div>
+          <div className="column matching-input">
+            <h2>Match</h2>
+            {pairs.map((pair, index) => (
+              <div key={pair["Column A"]} className="matching-row">
+                <label htmlFor={`match-${index}`} className="sr-only">
+                  Match for {pair["Column A"]}
+                </label>
+                <select
+                  id={`match-${index}`}
+                  value={selectedMatches.get(pair["Column A"]) || ""}
+                  onChange={(e) => handleMatch(pair["Column A"], e.target.value)}
+                  title={`Match for ${pair["Column A"]}`}
+                >
+                  <option value="" disabled>
+                    Select
+                  </option>
+                  {columnB.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ))}
+          </div>
           <div className="column column-b">
             <h2>Column B</h2>
             {columnB.map((item) => (
@@ -131,32 +122,6 @@ const TextMatchingActivity: React.FC = () => {
               </div>
             ))}
           </div>
-          <div className="column matching-input">
-            <h2>Match</h2>
-            {pairs.map((pair, index) => (
-                <div key={pair["Column A"]} className="matching-row">
-                    <label htmlFor={`match-${index}`} className="sr-only">
-                        Match for {pair["Column A"]}
-                    </label>
-                    <select
-                        id={`match-${index}`}
-        value={selectedMatches.get(pair["Column A"]) || ""}
-        onChange={(e) => handleMatch(pair["Column A"], e.target.value)}
-        title={`Match for ${pair["Column A"]}`}
-      >
-        <option value="" disabled>
-          Select
-        </option>
-        {columnB.map((item) => (
-          <option key={item} value={item}>
-            {item}
-          </option>
-        ))}
-      </select>
-    </div>
-  ))}
-</div>
-
         </div>
       )}
       <button className="submit-btn" onClick={checkAnswers}>
@@ -226,16 +191,15 @@ const TextMatchingActivity: React.FC = () => {
           text-align: center;
         }
         .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          border: 0;
         }
-
       `}</style>
     </div>
   );
