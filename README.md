@@ -18,5 +18,6 @@ You can start editing the chat pages by modifying `src/components/`. The page au
 Api for chat is in `src/pages/api/chat.ts`. 
 
 ## TODO:
-1. Modify css for `chat page,  Voice Input Practice,  Quiz, TextMatchingActivity`.
+1. Modify css for `chat page,  Voice Input Practice `.
 2. need to add activities `SpeakingPracticeActivity`.
+3. modify the line no 79 in quiz page.
