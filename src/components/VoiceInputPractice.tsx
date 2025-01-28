@@ -1,4 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"] });
+const Header: React.FC = () => {
+  return (
+    <header
+      style={{
+        width: "100%",
+        backgroundColor: "white",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "8px 16px",
+      }}
+    >
+      <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
+      <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
+    </header>
+  );
+};
 
 interface Sentence {
   English: string;
@@ -7,10 +27,10 @@ interface Sentence {
 
 const VoiceInputPractice: React.FC = () => {
   const [sentences, setSentences] = useState<Sentence[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [isRecording, setIsRecording] = useState<boolean>(false);
+  const [transcription, setTranscription] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isRecording, setIsRecording] = useState<number | null>(null);
-  const [results, setResults] = useState<(string | null)[]>([]); // Stores "correct", "incorrect", or null
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<BlobPart[]>([]);
 
@@ -18,7 +38,7 @@ const VoiceInputPractice: React.FC = () => {
   const fetchSentences = async () => {
     try {
       const response = await fetch(
-        "https://61zfnp3s-5000.inc1.devtunnels.ms/voice-input-practice",
+        "https://374svx84-5000.inc1.devtunnels.ms/voice-input-practice",
         {
           method: "POST",
           headers: {
@@ -42,15 +62,11 @@ const VoiceInputPractice: React.FC = () => {
           throw new Error("No sentences available.");
         }
         setSentences(data.data);
-        setResults(Array(data.data.length).fill(null)); // Initialize results for each sentence
       } else {
         throw new Error(data.message || "Error fetching sentences.");
       }
-
-      setLoading(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred.");
-      setLoading(false);
     }
   };
 
@@ -59,13 +75,30 @@ const VoiceInputPractice: React.FC = () => {
     fetchSentences();
   }, []);
 
-  // Handle recording audio for a specific sentence
-  const toggleRecording = async (index: number) => {
-    if (isRecording === index) {
+  // useEffect(() => {
+  //   // Mock data for testing
+  //   const mockData = {
+  //     status: "success",
+  //     data: [
+  //       { English: "Hello, my name is John.", Telugu: "హలో, నా పేరు జాన్." },
+  //       { English: "I am from Hyderabad.", Telugu: "నేను హైదరాబాద్ నుండి వచ్చాను." },
+  //       { English: "I like to read books.", Telugu: "నాకు పుస్తకాలు చదవడం ఇష్టం." },
+  //     ],
+  //   };
+
+  //   if (mockData.status === "success") {
+  //     setSentences(mockData.data);
+  //   } else {
+  //     setError("Failed to load mock data.");
+  //   }
+  // }, []);
+
+  const toggleRecording = async () => {
+    if (isRecording) {
       // Stop recording
       if (mediaRecorderRef.current) {
         mediaRecorderRef.current.stop();
-        setIsRecording(null);
+        setIsRecording(false);
       }
     } else {
       try {
@@ -82,21 +115,18 @@ const VoiceInputPractice: React.FC = () => {
           const formData = new FormData();
           formData.append("audio", audioBlob);
 
-          // Add the corresponding sentence pair to the request
-          const sentence = sentences[index];
-          const payload = JSON.stringify({
-            data: {
+          const sentence = sentences[currentIndex];
+          formData.append(
+            "data",
+            JSON.stringify({
               English: sentence.English,
-              Telugu: sentence.Telugu,
-            },
-          });
+            })
+          );
 
-          formData.append("sentenceData", payload);
-
-          // Send the audio and sentence pair to the backend for validation
+          // Send audio and sentence data to the backend
           try {
             const response = await fetch(
-              "https://61zfnp3s-5000.inc1.devtunnels.ms/voice-input-check",
+              "https://374svx84-5000.inc1.devtunnels.ms/voice-input-check",
               {
                 method: "POST",
                 body: formData,
@@ -105,69 +135,81 @@ const VoiceInputPractice: React.FC = () => {
             const result = await response.json();
 
             if (result.status === "success") {
-              const updatedResults = [...results];
-              updatedResults[index] = result.message === "correct" ? "correct" : "incorrect";
-              setResults(updatedResults);
+              // Process transcription and word colors
+              const words = sentence.English.split(" ").map((word, index) => {
+                const color = result[`word${index + 1}`] || "black";
+                return `<span style="color: ${color}">${word}</span>`;
+              });
+
+              setTranscription(words.join(" "));
             } else {
-              alert("Error validating the sentence. Please try again.");
+              setError("Error validating the sentence.");
             }
-          } catch (error) {
-            console.error("Error sending audio:", error);
+          } catch (err) {
+            console.error("Error sending audio:", err);
           }
 
           // Stop all tracks to release the microphone
-          const tracks = stream.getTracks();
-          tracks.forEach((track) => track.stop());
+          stream.getTracks().forEach((track) => track.stop());
         };
 
         mediaRecorder.start();
-        setIsRecording(index);
-      } catch (error) {
-        console.error("Error accessing microphone:", error);
+        setIsRecording(true);
+      } catch (err) {
+        console.error("Error accessing microphone:", err);
       }
     }
   };
 
-  if (loading) {
+  const handleNext = () => {
+    if (currentIndex < sentences.length - 1) {
+      setCurrentIndex((prevIndex) => prevIndex + 1);
+      setTranscription(null);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex((prevIndex) => prevIndex - 1);
+      setTranscription(null);
+    }
+  };
+
+  if (!sentences.length) {
     return <div>Loading sentences...</div>;
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   return (
+    <div className={`min-h-screen bg-gray-100 ${inter.className}`}>
+      <Header />
     <div className="voice-practice-container">
       <h1 className="practice-title">Voice Input Practice</h1>
-      <div className="practice-sentences">
-        {sentences.map((sentence, index) => (
-          <div key={index} className="sentence-pair">
-            <div>
-              <p className="english-sentence">
-                <strong>English:</strong> {sentence.English}
-              </p>
-              <p className="telugu-sentence">
-                <strong>Telugu:</strong> {sentence.Telugu}
-              </p>
-            </div>
-            <button
-              onClick={() => toggleRecording(index)}
-              className={`record-btn ${isRecording === index ? "recording" : ""}`}
-            >
-              {isRecording === index ? "Stop Recording" : "Record"}
-            </button>
-            {results[index] && (
-              <p
-                className={`result ${
-                  results[index] === "correct" ? "correct" : "incorrect"
-                }`}
-              >
-                {results[index] === "correct" ? "✅ Correct" : "❌ Incorrect"}
-              </p>
-            )}
-          </div>
-        ))}
+      <div className="sentence-pair">
+        <p className="english-sentence">
+          <strong>English:</strong> {sentences[currentIndex].English}
+        </p>
+        <p className="telugu-sentence">
+          <strong>Telugu:</strong> {sentences[currentIndex].Telugu}
+        </p>
       </div>
+      <div className="controls">
+        <button onClick={handlePrev} disabled={currentIndex === 0}>
+          Prev
+        </button>
+        <button onClick={toggleRecording} className={`record-btn ${isRecording ? "recording" : ""}`}>
+          {isRecording ? "Stop Recording" : "Record"}
+        </button>
+        <button onClick={handleNext} disabled={currentIndex === sentences.length - 1}>
+          Next
+        </button>
+      </div>
+      {transcription && (
+        <div
+          className="transcription"
+          dangerouslySetInnerHTML={{ __html: transcription }}
+        ></div>
+      )}
+      {error && <p className="error">{error}</p>}
       <style jsx>{`
         .voice-practice-container {
           font-family: Arial, sans-serif;
@@ -183,257 +225,50 @@ const VoiceInputPractice: React.FC = () => {
           margin-bottom: 20px;
           text-align: center;
         }
-        .practice-sentences {
-          margin-bottom: 20px;
-        }
         .sentence-pair {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
           margin-bottom: 15px;
         }
         .english-sentence {
           font-size: 18px;
+          margin-bottom: 5px;
         }
         .telugu-sentence {
           font-size: 16px;
           color: #555;
         }
-        .record-btn {
-          padding: 5px 15px;
+        .controls {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 20px;
+        }
+        button {
+          padding: 10px 20px;
           background: #007bff;
           color: white;
           border: none;
           border-radius: 4px;
           cursor: pointer;
         }
+        button:disabled {
+          background: #ccc;
+          cursor: not-allowed;
+        }
         .record-btn.recording {
           background: #ff4136;
         }
-        .record-btn:hover {
-          background: #0056b3;
+        .transcription {
+          margin-top: 20px;
+          font-size: 18px;
+          line-height: 1.5;
         }
-        .result {
-          margin-top: 5px;
-          font-weight: bold;
-        }
-        .correct {
-          color: green;
-        }
-        .incorrect {
+        .error {
           color: red;
+          margin-top: 20px;
         }
       `}</style>
+    </div>
     </div>
   );
 };
 
 export default VoiceInputPractice;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState, useRef, useEffect } from "react";
-
-// interface Sentence {
-//   English: string;
-//   Telugu: string;
-// }
-
-// const VoiceInputPractice: React.FC = () => {
-//   const [sentences, setSentences] = useState<Sentence[]>([]);
-//   const [loading, setLoading] = useState<boolean>(true);
-//   const [error, setError] = useState<string | null>(null);
-//   const [isRecording, setIsRecording] = useState<boolean>(false);
-//   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-//   const chunksRef = useRef<BlobPart[]>([]);
-
-//   // Fetch sentences from the API
-//   const fetchSentences = async () => {
-//     try {
-//       const response = await fetch("https://61zfnp3s-5000.inc1.devtunnels.ms/voice-input-practice", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           topic: "Introducing Yourself",
-//           difficulty: "Beginner",
-//         }),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error(`Failed to fetch sentences: ${response.statusText}`);
-//       }
-
-//       const data = await response.json();
-
-//       if (data.status === "success") {
-//         setSentences(data.data);
-//       } else {
-//         throw new Error(data.message || "Unknown error occurred.");
-//       }
-
-//       setLoading(false);
-//     } catch (err) {
-//       if (err instanceof Error) {
-//         setError(err.message);
-//       } else {
-//         setError("An unknown error occurred.");
-//       }
-//       setLoading(false);
-//     }
-//   };
-
-//   // Fetch sentences on component mount
-//   useEffect(() => {
-//     fetchSentences();
-//   }, []);
-
-//   // Handle recording audio
-//   const toggleRecording = async () => {
-//     if (isRecording) {
-//       // Stop recording
-//       if (mediaRecorderRef.current) {
-//         mediaRecorderRef.current.stop();
-//         setIsRecording(false);
-//       }
-//     } else {
-//       // Start recording
-//       try {
-//         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-//         const mediaRecorder = new MediaRecorder(stream);
-//         mediaRecorderRef.current = mediaRecorder;
-
-//         const chunks: BlobPart[] = [];
-//         chunksRef.current = chunks;
-
-//         mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
-//         mediaRecorder.onstop = async () => {
-//           const audioBlob = new Blob(chunks, { type: "audio/webm" });
-//           const audioUrl = URL.createObjectURL(audioBlob);
-
-//           // Display the recorded audio
-//           const audioElement = document.createElement("audio");
-//           audioElement.src = audioUrl;
-//           audioElement.controls = true;
-//           document.getElementById("recordings")?.appendChild(audioElement);
-//         };
-
-//         mediaRecorder.start();
-//         setIsRecording(true);
-//       } catch (error) {
-//         console.error("Error accessing microphone:", error);
-//       }
-//     }
-//   };
-
-//   if (loading) {
-//     return <div>Loading sentences...</div>;
-//   }
-
-//   if (error) {
-//     return <div>Error: {error}</div>;
-//   }
-
-//   return (
-//     <div className="voice-practice-container">
-//       <h1 className="practice-title">Voice Input Practice</h1>
-//       <div className="practice-sentences">
-//         {sentences.map((sentence, index) => (
-//           <div key={index} className="sentence-pair">
-//             <p className="english-sentence">
-//               <strong>English:</strong> {sentence.English}
-//             </p>
-//             <p className="telugu-sentence">
-//               <strong>Telugu:</strong> {sentence.Telugu}
-//             </p>
-//           </div>
-//         ))}
-//       </div>
-//       <button
-//         onClick={toggleRecording}
-//         className={`record-btn ${isRecording ? "recording" : ""}`}
-//       >
-//         {isRecording ? "Stop Recording" : "Start Recording"}
-//       </button>
-//       <div id="recordings" className="recordings-container"></div>
-//       <style jsx>{`
-//         .voice-practice-container {
-//           font-family: Arial, sans-serif;
-//           max-width: 600px;
-//           margin: 20px auto;
-//           padding: 20px;
-//           border: 1px solid #ccc;
-//           border-radius: 8px;
-//           background: #f9f9f9;
-//         }
-//         .practice-title {
-//           font-size: 24px;
-//           margin-bottom: 20px;
-//           text-align: center;
-//         }
-//         .practice-sentences {
-//           margin-bottom: 20px;
-//         }
-//         .sentence-pair {
-//           margin-bottom: 15px;
-//         }
-//         .english-sentence {
-//           font-size: 18px;
-//           margin-bottom: 5px;
-//         }
-//         .telugu-sentence {
-//           font-size: 16px;
-//           color: #555;
-//         }
-//         .record-btn {
-//           display: block;
-//           margin: 20px auto;
-//           padding: 10px 20px;
-//           background: #007bff;
-//           color: white;
-//           border: none;
-//           border-radius: 4px;
-//           cursor: pointer;
-//         }
-//         .record-btn.recording {
-//           background: #ff4136;
-//         }
-//         .record-btn:hover {
-//           background: #0056b3;
-//         }
-//         .recordings-container {
-//           margin-top: 20px;
-//         }
-//         audio {
-//           display: block;
-//           margin-top: 10px;
-//         }
-//       `}</style>
-//     </div>
-//   );
-// };
-
-// export default VoiceInputPractice;

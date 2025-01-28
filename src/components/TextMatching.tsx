@@ -1,4 +1,25 @@
 import React, { useState, useEffect } from "react";
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"] });
+
+const Header: React.FC = () => {
+  return (
+    <header
+      style={{
+        width: "100%",
+        backgroundColor: "white",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "8px 16px",
+      }}
+    >
+      <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
+      <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
+    </header>
+  );
+};
 
 interface MatchingPair {
   "Column A": string;
@@ -11,6 +32,7 @@ const TextMatchingActivity: React.FC = () => {
   const [selectedMatches, setSelectedMatches] = useState<Map<string, string>>(
     new Map()
   );
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   // Shuffle an array (for randomizing Column B)
@@ -22,32 +44,66 @@ const TextMatchingActivity: React.FC = () => {
   };
 
   useEffect(() => {
-    // Replace API call with hardcoded data for testing
-    const samplePairs = [
-      {
-        "Column A": "1) Apple",
-        "Column B": "A) పండు",
-      },
-      {
-        "Column A": "2) Book",
-        "Column B": "B) పుస్తకం",
-      },
-      {
-        "Column A": "3) Chair",
-        "Column B": "C) కూర్చీ",
-      },
-      {
-        "Column A": "4) Tree",
-        "Column B": "D) చెట్టు",
-      },
-      {
-        "Column A": "5) Water",
-        "Column B": "E) నీరు",
-      },
-    ];
+    const fetchPairs = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(
+          "https://374svx84-5000.inc1.devtunnels.ms/text-matching-activity",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              main_topic: "Basic Vocabulary",
+              difficulty: "Beginner",
+            }),
+          }
+        );
 
-    setPairs(samplePairs); // Set the hardcoded data
-    setColumnB(shuffleArray(samplePairs.map((pair) => pair["Column B"]))); // Populate Column B
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const data: MatchingPair[] = await response.json();
+        setPairs(data); // Set the fetched data
+        setColumnB(shuffleArray(data.map((pair) => pair["Column B"]))); // Populate Column B
+      } catch (err: any) {
+        setError(err.message || "An unknown error occurred.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPairs();
+
+    // Commenting out the sample data
+    // const samplePairs = [
+    //   {
+    //     "Column A": "1) Apple",
+    //     "Column B": "A) పండు",
+    //   },
+    //   {
+    //     "Column A": "2) Book",
+    //     "Column B": "B) పుస్తకం",
+    //   },
+    //   {
+    //     "Column A": "3) Chair",
+    //     "Column B": "C) కూర్చీ",
+    //   },
+    //   {
+    //     "Column A": "4) Tree",
+    //     "Column B": "D) చెట్టు",
+    //   },
+    //   {
+    //     "Column A": "5) Water",
+    //     "Column B": "E) నీరు",
+    //   },
+    // ];
+
+    // setPairs(samplePairs); // Set the hardcoded data
+    // setColumnB(shuffleArray(samplePairs.map((pair) => pair["Column B"]))); // Populate Column B
   }, []);
 
   // Handle selecting a match
@@ -69,12 +125,19 @@ const TextMatchingActivity: React.FC = () => {
     alert(allCorrect ? "✅ All answers are correct!" : "❌ Some answers are incorrect.");
   };
 
+  if (loading) {
+    return <div className="loading">Loading activity...</div>;
+  }
+
+  if (error) {
+    return <div className="error-message">Error: {error}</div>;
+  }
+
   return (
-    <div className="text-matching-container">
-      <h1 className="activity-title">Text Matching Activity</h1>
-      {error ? (
-        <div className="error-message">Error: {error}</div>
-      ) : (
+    <div className={`min-h-screen bg-gray-100 ${inter.className}`}>
+      <Header />
+      <div className="text-matching-container">
+        <h1 className="activity-title">Text Matching Activity</h1>
         <div className="matching-grid">
           <div className="column column-a">
             <h2>Column A</h2>
@@ -123,11 +186,10 @@ const TextMatchingActivity: React.FC = () => {
             ))}
           </div>
         </div>
-      )}
-      <button className="submit-btn" onClick={checkAnswers}>
-        Submit
-      </button>
-      <style jsx>{`
+        <button className="submit-btn" onClick={checkAnswers}>
+          Submit
+        </button>
+        <style jsx>{`
         .text-matching-container {
           font-family: Arial, sans-serif;
           max-width: 800px;
@@ -201,6 +263,7 @@ const TextMatchingActivity: React.FC = () => {
           border: 0;
         }
       `}</style>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,26 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"] });
+
+const Header: React.FC = () => {
+  return (
+    <header
+      style={{
+        width: "100%",
+        backgroundColor: "white",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "8px 16px",
+      }}
+    >
+      <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
+      <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
+    </header>
+  );
+};
 
 interface Question {
   question_number: number;
@@ -16,44 +38,57 @@ const QuizGenerator: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const mockData: Question[] = [
-      {
-        question_number: 1,
-        question: "Translate the word 'tree' into Telugu.",
-        options: ["A) చెట్టు", "B) పూలు", "C) కాపురం", "D) ఇల్లు"],
-        answer: "A) చెట్టు",
-      },
-      {
-        question_number: 2,
-        question: "Translate the word 'book' into Telugu.",
-        options: ["A) పుస్తకం", "B) చెట్టు", "C) కూర్చీ", "D) నీరు"],
-        answer: "A) పుస్తకం",
-      },
-      {
-        question_number: 3,
-        question: "Translate the word 'water' into Telugu.",
-        options: ["A) చెట్టు", "B) పూలు", "C) నీరు", "D) ఇల్లు"],
-        answer: "C) నీరు",
-      },
-      {
-        question_number: 4,
-        question: "Translate the word 'chair' into Telugu.",
-        options: ["A) చెట్టు", "B) కూర్చీ", "C) పూలు", "D) ఇల్లు"],
-        answer: "B) కూర్చీ",
-      },
-      {
-        question_number: 5,
-        question: "Translate the word 'house' into Telugu.",
-        options: ["A) చెట్టు", "B) పూలు", "C) ఇల్లు", "D) కూర్చీ"],
-        answer: "C) ఇల్లు",
-      },
-    ];
-    setQuizData(mockData);
-    setLoading(false);
+    const fetchQuizData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(
+          "https://374svx84-5000.inc1.devtunnels.ms//quiz-generator",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              topic: "Learning English from Telugu",
+              num_questions: 5,
+              difficulty: "Beginner",
+            }),
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+        const data: Question[] = await response.json();
+        setQuizData(data);
+      } catch (err: any) {
+        setError(err.message || "An unknown error occurred.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuizData();
+
+    // Commenting out the sample useEffect
+    // const mockData: Question[] = [
+    //   {
+    //     question_number: 1,
+    //     question: "Translate the word 'tree' into Telugu.",
+    //     options: ["A) చెట్టు", "B) పూలు", "C) కాపురం", "D) ఇల్లు"],
+    //     answer: "A) చెట్టు",
+    //   },
+    //   // Add more mock data here...
+    // ];
+    // setQuizData(mockData);
+    // setLoading(false);
   }, []);
 
   const handleOptionChange = (option: string) => {
-    setUserAnswers({ ...userAnswers, [quizData[currentQuestionIndex].question_number]: option });
+    setUserAnswers({
+      ...userAnswers,
+      [quizData[currentQuestionIndex].question_number]: option,
+    });
   };
 
   const handleNextQuestion = () => {
@@ -76,8 +111,9 @@ const QuizGenerator: React.FC = () => {
     setScore(null);
   };
 
+  const router = useRouter();
   const handleBackToMain = () => {
-    window.location.reload(); // Replace with navigation logic if using a router
+    router.push("/"); // Replace with navigation logic if using a router
   };
 
   const calculateScore = () => {
@@ -100,53 +136,73 @@ const QuizGenerator: React.FC = () => {
   }
 
   return (
-    <div className="quiz-container">
-      <h1 className="quiz-title">Quiz: Learning English from Telugu</h1>
-      {score === null ? (
-        <div className="quiz-question">
-          <h2>
-            {quizData[currentQuestionIndex].question_number}. {quizData[currentQuestionIndex].question}
-          </h2>
-          <div className="quiz-options">
-            {quizData[currentQuestionIndex].options.map((option) => (
-              <label
-                key={option}
-                className={`quiz-option ${userAnswers[quizData[currentQuestionIndex].question_number] === option ? "selected-option" : ""}`}
+    <div className={`min-h-screen bg-gray-100 ${inter.className}`}>
+      <Header />
+      <div className="quiz-container">
+        <h1 className="quiz-title">Quiz: Learning English from Telugu</h1>
+        {score === null ? (
+          <div className="quiz-question">
+            <h2>
+              {quizData[currentQuestionIndex].question_number}.{" "}
+              {quizData[currentQuestionIndex].question}
+            </h2>
+            <div className="quiz-options">
+              {quizData[currentQuestionIndex].options.map((option) => (
+                <label
+                  key={option}
+                  className={`quiz-option ${
+                    userAnswers[quizData[currentQuestionIndex].question_number] ===
+                    option
+                      ? "selected-option"
+                      : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name={`question-${quizData[currentQuestionIndex].question_number}`}
+                    value={option}
+                    onChange={() => handleOptionChange(option)}
+                    checked={
+                      userAnswers[
+                        quizData[currentQuestionIndex].question_number
+                      ] === option
+                    }
+                  />
+                  {option}
+                </label>
+              ))}
+            </div>
+            <div className="quiz-navigation">
+              <button
+                onClick={handlePrevQuestion}
+                className="quiz-prev-btn"
+                disabled={currentQuestionIndex === 0}
               >
-                <input
-                  type="radio"
-                  name={`question-${quizData[currentQuestionIndex].question_number}`}
-                  value={option}
-                  onChange={() => handleOptionChange(option)}
-                  checked={userAnswers[quizData[currentQuestionIndex].question_number] === option}
-                />
-                {option}
-              </label>
-            ))}
+                Previous
+              </button>
+              <button onClick={handleNextQuestion} className="quiz-next-btn">
+                {currentQuestionIndex < quizData.length - 1
+                  ? "Next"
+                  : "Submit"}
+              </button>
+            </div>
           </div>
-          <div className="quiz-navigation">
-            <button onClick={handlePrevQuestion} className="quiz-prev-btn" disabled={currentQuestionIndex === 0}>
-              Previous
-            </button>
-            <button onClick={handleNextQuestion} className="quiz-next-btn">
-              {currentQuestionIndex < quizData.length - 1 ? "Next" : "Submit"}
-            </button>
+        ) : (
+          <div className="quiz-result">
+            <h2>
+              Your Score: {score}/{quizData.length}
+            </h2>
+            <div className="quiz-result-buttons">
+              <button onClick={handleRetakeQuiz} className="quiz-retake-btn">
+                Retake Quiz
+              </button>
+              <button onClick={handleBackToMain} className="quiz-back-btn">
+                Back to Main
+              </button>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="quiz-result">
-          <h2>Your Score: {score}/{quizData.length}</h2>
-          <div className="quiz-result-buttons">
-            <button onClick={handleRetakeQuiz} className="quiz-retake-btn">
-              Retake Quiz
-            </button>
-            <button onClick={handleBackToMain} className="quiz-back-btn">
-              Back to Main
-            </button>
-          </div>
-        </div>
-      )}
-      <style jsx>{`
+        )}
+        <style jsx>{`
         :root {
           --primary-color: #0ff1ce;
           --secondary-color: #1a1a2e;
@@ -165,7 +221,7 @@ const QuizGenerator: React.FC = () => {
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
           color: var(--text-color);
           text-align: center;
-          background-image: url("https://media.gettyimages.com/id/1428791839/video/questions-marks-animated-4k-chroma-key-loopable.jpg?s=640x640&k=20&c=ghH4BOgglK5lr6OGD03PeMn-QuyLU6xn7DpU8ISojNE=");
+          // background-image: url("https://media.gettyimages.com/id/1428791839/video/questions-marks-animated-4k-chroma-key-loopable.jpg?s=640x640&k=20&c=ghH4BOgglK5lr6OGD03PeMn-QuyLU6xn7DpU8ISojNE=");
         }
 
         .quiz-title {
@@ -291,6 +347,7 @@ const QuizGenerator: React.FC = () => {
           background: #3498db;
         }
       `}</style>
+      </div>
     </div>
   );
 };

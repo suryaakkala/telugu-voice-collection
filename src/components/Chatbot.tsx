@@ -1,11 +1,31 @@
 import React, { useState, useRef } from 'react';
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"] });
 
 interface Message {
   text: string;
   audioUrl?: string;
   sender: 'user' | 'bot';
+  explanation?: string;
 }
-
+const Header: React.FC = () => {
+  return (
+    <header
+      style={{
+        width: "100%",
+        backgroundColor: "white",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "8px 16px",
+      }}
+    >
+      <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
+      <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
+    </header>
+  );
+};
 const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
@@ -20,16 +40,20 @@ const Chatbot: React.FC = () => {
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     try {
-      const response = await fetch('/api/chat', {
+      const formData = new FormData();
+      formData.append('type', 'text');
+      formData.append('query_message', input);
+
+      const response = await fetch('https://374svx84-5000.inc1.devtunnels.ms/get-response', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'text', prompt: input }),
+        body: formData,
       });
       const data = await response.json();
 
       const botMessage: Message = {
-        text: data.response,
-        audioUrl: data.audioUrl,
+        text: data.data,
+        audioUrl: data.audio,
+        explanation: data.explanation, // Include explanation field
         sender: 'bot',
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -44,7 +68,7 @@ const Chatbot: React.FC = () => {
     if (!file) return;
 
     const formData = new FormData();
-    formData.append('type', 'file');
+    formData.append('type', 'audio');
     formData.append('file', file);
 
     try {
@@ -55,8 +79,9 @@ const Chatbot: React.FC = () => {
       const data = await response.json();
 
       const botMessage: Message = {
-        text: data.response,
-        audioUrl: data.audioUrl,
+        text: data.message,
+        audioUrl: data.audio,
+        explanation: data.explanation, // Include explanation field
         sender: 'bot',
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -95,8 +120,9 @@ const Chatbot: React.FC = () => {
             const data = await response.json();
 
             const botMessage: Message = {
-              text: data.response,
-              audioUrl: data.audioUrl,
+              text: data.message,
+              audioUrl: data.audio,
+              explanation: data.explanation, // Include explanation field
               sender: 'bot',
             };
             setMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -113,102 +139,134 @@ const Chatbot: React.FC = () => {
     }
   };
 
-  return (
-    <div className="chat-container">
-  <div className="messages">
-    {messages.map((msg, index) => (
-      <div key={index} className={`message ${msg.sender}`}>
-        <p>{msg.text}</p>
-        {msg.audioUrl && <audio controls src={msg.audioUrl}></audio>}
-      </div>
-    ))}
-  </div>
-  <div className="input-container">
-    <input
-      type="text"
-      value={input}
-      onChange={(e) => setInput(e.target.value)}
-      placeholder="Type a message..."
-    />
-    <button onClick={sendMessage}>Send</button>
-    <button onClick={toggleRecording}>{isRecording ? 'Stop' : 'Record'}</button>
-    <input type="file" onChange={handleFileUpload} />
-  </div>
-  <style jsx>{`
-    .chat-container {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      max-width: 500px;
-      margin: 20px auto;
-      border: 1px solid #e0e0e0;
-      border-radius: 12px;
-      padding: 15px;
-      background-color: #ffffff;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    .messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      background-color: #f7f7f7;
-    }
-    .message {
-      margin-bottom: 12px;
-      padding: 8px 12px;
-      border-radius: 8px;
-    }
-    .message.user {
-      align-self: flex-end;
-      text-align: right;
-      color: #ffffff;
-      background-color: #4a90e2;
-    }
-    .message.bot {
-      align-self: flex-start;
-      text-align: left;
-      color: #ffffff;
-      background-color: #50c878;
-    }
-    .input-container {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .input-container input[type='text'] {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-    }
-    .input-container button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      cursor: pointer;
-      background-color: #4a90e2;
-      color: white;
-      transition: background-color 0.3s;
-    }
-    .input-container button:hover {
-      background-color: #357abd;
-    }
-    .input-container button:active {
-      background-color: #28578a;
-    }
-    .input-container input[type='file'] {
-      border: none;
-      font-size: 14px;
-    }
-  `}</style>
-</div>
+  const showExplanation = (index: number) => {
+    const explanationMessage: Message = {
+      text: messages[index].explanation || 'No explanation provided.',
+      sender: 'bot',
+    };
+    setMessages((prevMessages) => [...prevMessages, explanationMessage]);
+  };
 
+  return (
+    <div className={`min-h-screen bg-gray-100 ${inter.className}`}>
+      <Header />
+    <div className="chat-container">
+      <div className="messages">
+        {messages.map((msg, index) => (
+          <div key={index} className={`message ${msg.sender}`}>
+            <p>{msg.text}</p>
+            {msg.audioUrl && <audio controls src={msg.audioUrl}></audio>}
+            {msg.explanation && msg.sender === 'bot' && (
+              <button
+                className="explain-button"
+                onClick={() => showExplanation(index)}
+              >
+                Explain
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="input-container">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type a message..."
+        />
+        <button onClick={sendMessage}>Send</button>
+        <button onClick={toggleRecording}>{isRecording ? 'Stop' : 'Record'}</button>
+        <input type="file" onChange={handleFileUpload} />
+      </div>
+      <style jsx>{`
+        .chat-container {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          max-width: 500px;
+          margin: 20px auto;
+          border: 1px solid #e0e0e0;
+          border-radius: 12px;
+          padding: 15px;
+          background-color: #ffffff;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .messages {
+          flex: 1;
+          overflow-y: auto;
+          padding: 10px;
+          margin-bottom: 10px;
+          border: 1px solid #e0e0e0;
+          border-radius: 8px;
+          background-color: #f7f7f7;
+        }
+        .message {
+          margin-bottom: 12px;
+          padding: 8px 12px;
+          border-radius: 8px;
+        }
+        .message.user {
+          align-self: flex-end;
+          text-align: right;
+          color: #ffffff;
+          background-color: #4a90e2;
+        }
+        .message.bot {
+          align-self: flex-start;
+          text-align: left;
+          color: #ffffff;
+          background-color: #50c878;
+        }
+        .explain-button {
+          margin-top: 5px;
+          padding: 5px 10px;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          background-color: #ffa500;
+          color: white;
+          font-size: 12px;
+        }
+        .explain-button:hover {
+          background-color: #cc8400;
+        }
+        .input-container {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+        .input-container input[type='text'] {
+          flex: 1;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 14px;
+        }
+        .input-container button {
+          padding: 10px 15px;
+          border: none;
+          border-radius: 8px;
+          font-size: 14px;
+          cursor: pointer;
+          background-color: #4a90e2;
+          color: white;
+          transition: background-color 0.3s;
+        }
+        .input-container button:hover {
+          background-color: #357abd;
+        }
+        .input-container button:active {
+          background-color: #28578a;
+        }
+        .input-container input[type='file'] {
+          border: none;
+          font-size: 14px;
+        }
+      `}</style>
+    </div>
+  </div>
   );
 };
+
 
 export default Chatbot;
