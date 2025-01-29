@@ -135,7 +135,7 @@ export default function LandingPage() {
                   boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
                 }}
               >
-                Get Started
+                Start Chat
               </Button>
               <Button
                 onClick={handleQuizNavigation}
