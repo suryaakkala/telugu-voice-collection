@@ -38,7 +38,7 @@ const VoiceInputPractice: React.FC = () => {
   const fetchSentences = async () => {
     try {
       const response = await fetch(
-        "https://374svx84-5000.inc1.devtunnels.ms/voice-input-practice",
+        "https://rwhmdthc-5000.inc1.devtunnels.ms/voice-input-practice",
         {
           method: "POST",
           headers: {
@@ -126,7 +126,7 @@ const VoiceInputPractice: React.FC = () => {
           // Send audio and sentence data to the backend
           try {
             const response = await fetch(
-              "https://374svx84-5000.inc1.devtunnels.ms/voice-input-check",
+              "https://rwhmdthc-5000.inc1.devtunnels.ms/voice-input-check",
               {
                 method: "POST",
                 body: formData,

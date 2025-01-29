@@ -44,7 +44,7 @@ const Chatbot: React.FC = () => {
       formData.append('type', 'text');
       formData.append('query_message', input);
 
-      const response = await fetch('https://374svx84-5000.inc1.devtunnels.ms/get-response', {
+      const response = await fetch('https://rwhmdthc-5000.inc1.devtunnels.ms/get-response', {
         method: 'POST',
         body: formData,
       });
