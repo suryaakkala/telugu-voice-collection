@@ -2,7 +2,14 @@ import formidable, { Fields, Files } from 'formidable';
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import fs from 'fs';
-import FormData from 'form-data';
+
+interface FormData {
+  name: string;
+  type?: string;
+  query_message?: string;
+  audio?: string;
+}
+
 
 export const config = {
   api: {
@@ -27,7 +34,7 @@ export default async function handler(
       try {
         const type = fields.type?.toString();
         const name = 'user1'; // Hardcoded user for now
-        const formData: any = { name, type };
+        const formData: FormData = { name, type };
 
         // Handling text requests
         if (type === 'text' && fields.prompt) {
