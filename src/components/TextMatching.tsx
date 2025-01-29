@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Inter } from "next/font/google";
+import { Spinner } from "@/components/ui/spinner";
+import { useRouter } from "next/navigation";
+
 const inter = Inter({ subsets: ["latin"] });
 
 const Header: React.FC = () => {
@@ -34,7 +37,10 @@ const TextMatchingActivity: React.FC = () => {
   );
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const router = useRouter();
+  const handleBackToMain = () => {
+    router.push("/");
+  };
   // Shuffle an array (for randomizing Column B)
   const shuffleArray = (array: string[]) => {
     return array
@@ -132,13 +138,42 @@ const TextMatchingActivity: React.FC = () => {
     alert(allCorrect ? "✅ All answers are correct!" : "❌ Some answers are incorrect.");
   };
 
-  if (loading) {
-    return <div className="loading">Loading activity...</div>;
-  }
-
-  if (error) {
-    return <div className="error-message">Error: {error}</div>;
-  }
+  if (loading)
+      return (
+      <div>
+        <div className="center-screen">
+          <Spinner variant="pinwheel" className="w-12 h-12 text-blue-500" />
+          <p className="loading-text">Loading Text Matching Activity Please Wait...</p>
+        </div>
+        <style jsx>{`
+          .center-screen {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.8); /* Optional: Light overlay */
+          }
+          .loading-text {
+            margin-top: 1rem;
+            font-size: 1.25rem;
+            color: #000;
+            font-family: 'Arial', sans-serif; /* Change the font family */
+            font-weight: bold; /* Make the text bold */
+          }
+        `}</style>
+      </div>
+      );
+    
+    if (error) {
+      handleBackToMain();
+      return null; // Ensure the component stops rendering
+    }
 
   return (
     <div className={`min-h-screen bg-gray-100 ${inter.className}`}>

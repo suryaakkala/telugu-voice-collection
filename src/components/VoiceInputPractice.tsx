@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Inter } from "next/font/google";
+import { Spinner } from "./ui/spinner";
+
+
 const inter = Inter({ subsets: ["latin"] });
 const Header: React.FC = () => {
   return (
@@ -179,7 +182,36 @@ const VoiceInputPractice: React.FC = () => {
   };
 
   if (!sentences.length) {
-    return <div>Loading sentences...</div>;
+    return (
+        <div>
+          <div className="center-screen">
+            <Spinner variant="pinwheel" className="w-12 h-12 text-blue-500" />
+            <p className="loading-text">Loading Sentences Please Wait...</p>
+          </div>
+          <style jsx>{`
+            .center-screen {
+              position: fixed;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              width: 100vw;
+              height: 100vh;
+              background: rgba(255, 255, 255, 0.8); /* Optional: Light overlay */
+            }
+            .loading-text {
+              margin-top: 1rem;
+              font-size: 1.25rem;
+              color: #000;
+              font-family: 'Arial', sans-serif; /* Change the font family */
+              font-weight: bold; /* Make the text bold */
+            }
+          `}</style>
+        </div>
+        );
   }
 
   return (
