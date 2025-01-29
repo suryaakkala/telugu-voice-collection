@@ -69,11 +69,16 @@ const TextMatchingActivity: React.FC = () => {
         const data: MatchingPair[] = await response.json();
         setPairs(data); // Set the fetched data
         setColumnB(shuffleArray(data.map((pair) => pair["Column B"]))); // Populate Column B
-      } catch (err: any) {
-        setError(err.message || "An unknown error occurred.");
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred.");
+        }
       } finally {
         setLoading(false);
       }
+      
     };
 
     fetchPairs();
