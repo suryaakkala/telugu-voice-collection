@@ -44,71 +44,73 @@ const TextMatchingActivity: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchPairs = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(
-          "https://rwhmdthc-5000.inc1.devtunnels.ms/text-matching-activity",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              main_topic: "Basic Vocabulary",
-              difficulty: "Beginner",
-            }),
-          }
-        );
+    // const fetchPairs = async () => {
+    //   setLoading(true);
+    //   setError(null);
+    //   try {
+    //     const response = await fetch(
+    //       "https://rwhmdthc-5000.inc1.devtunnels.ms/text-matching-activity",
+    //       {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({
+    //           main_topic: "Basic Vocabulary",
+    //           difficulty: "Beginner",
+    //         }),
+    //       }
+    //     );
 
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
+    //     if (!response.ok) {
+    //       throw new Error(`Error: ${response.statusText}`);
+    //     }
 
-        const data: MatchingPair[] = await response.json();
-        setPairs(data); // Set the fetched data
-        setColumnB(shuffleArray(data.map((pair) => pair["Column B"]))); // Populate Column B
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("An unknown error occurred.");
-        }
-      } finally {
-        setLoading(false);
-      }
+    //     const data: MatchingPair[] = await response.json();
+    //     setPairs(data); // Set the fetched data
+    //     setColumnB(shuffleArray(data.map((pair) => pair["Column B"]))); // Populate Column B
+    //   } catch (err: unknown) {
+    //     if (err instanceof Error) {
+    //       setError(err.message);
+    //     } else {
+    //       setError("An unknown error occurred.");
+    //     }
+    //   } finally {
+    //     setLoading(false);
+    //   }
       
-    };
+    // };
 
-    fetchPairs();
+    // fetchPairs();
 
     // Commenting out the sample data
-    // const samplePairs = [
-    //   {
-    //     "Column A": "1) Apple",
-    //     "Column B": "A) పండు",
-    //   },
-    //   {
-    //     "Column A": "2) Book",
-    //     "Column B": "B) పుస్తకం",
-    //   },
-    //   {
-    //     "Column A": "3) Chair",
-    //     "Column B": "C) కూర్చీ",
-    //   },
-    //   {
-    //     "Column A": "4) Tree",
-    //     "Column B": "D) చెట్టు",
-    //   },
-    //   {
-    //     "Column A": "5) Water",
-    //     "Column B": "E) నీరు",
-    //   },
-    // ];
+    const samplePairs = [
+      {
+        "Column A": "Apple",
+        "Column B": "పండు",
+      },
+      {
+        "Column A": "Book",
+        "Column B": "పుస్తకం",
+      },
+      {
+        "Column A": "Chair",
+        "Column B": "కూర్చీ",
+      },
+      {
+        "Column A": "Tree",
+        "Column B": "చెట్టు",
+      },
+      {
+        "Column A": "Water",
+        "Column B": "నీరు",
+      },
+    ];
 
-    // setPairs(samplePairs); // Set the hardcoded data
-    // setColumnB(shuffleArray(samplePairs.map((pair) => pair["Column B"]))); // Populate Column B
+    setPairs(samplePairs); // Set the hardcoded data
+    setColumnB(shuffleArray(samplePairs.map((pair) => pair["Column B"]))); // Populate Column B
+    setLoading(false);
+    setError(null);
   }, []);
 
   // Handle selecting a match
