@@ -69,10 +69,10 @@ const Chatbot: React.FC = () => {
 
     const formData = new FormData();
     formData.append('type', 'audio');
-    formData.append('file', file);
+    formData.append('audio', file);
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await fetch('https://rwhmdthc-5000.inc1.devtunnels.ms/get-response', {
         method: 'POST',
         body: formData,
       });
@@ -110,26 +110,29 @@ const Chatbot: React.FC = () => {
           const audioBlob = new Blob(chunks, { type: 'audio/webm' });
           const formData = new FormData();
           formData.append('type', 'audio');
-          formData.append('file', audioBlob, 'recorded_audio.webm');
-
+          formData.append('audio', audioBlob, 'recorded_audio.webm'); // Ensure correct key is used
+        
           try {
-            const response = await fetch('/api/chat', {
+            const response = await fetch('https://rwhmdthc-5000.inc1.devtunnels.ms/get-response', { 
               method: 'POST',
               body: formData,
             });
+        
             const data = await response.json();
-
+            console.log('API Response:', data); // Debugging log
+        
             const botMessage: Message = {
-              text: data.message,
+              text: data.data,
               audioUrl: data.audio,
-              explanation: data.explanation, // Include explanation field
+              explanation: data.explanation, 
               sender: 'bot',
             };
             setMessages((prevMessages) => [...prevMessages, botMessage]);
           } catch (error) {
-            console.error('Error:', error);
+            console.error('Error sending audio:', error);
           }
         };
+        
 
         mediaRecorder.start();
         setIsRecording(true);
