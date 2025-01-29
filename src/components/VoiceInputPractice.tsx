@@ -133,13 +133,20 @@ const VoiceInputPractice: React.FC = () => {
               }
             );
             const result = await response.json();
-
+            console.log("Full API Response:", result); // Debugging log
             if (result.status === "success") {
               // Process transcription and word colors
               const words = sentence.English.split(" ").map((word, index) => {
                 const color = result[`word${index + 1}`] || "black";
+                console.log(`Word: ${word}, Color: ${color}`); // Debugging log
                 return `<span style="color: ${color}">${word}</span>`;
               });
+              
+              const formattedTranscription = words.join(" ");
+              console.log("Formatted Transcription:", formattedTranscription); // Debugging log
+              
+              setTranscription(formattedTranscription);
+              
 
               setTranscription(words.join(" "));
             } else {
