@@ -42,57 +42,34 @@ const QuizGenerator: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(
-          "https://rwhmdthc-5000.inc1.devtunnels.ms/quiz-generator",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              topic: "Learning English from Telugu",
-              num_questions: 5,
-              difficulty: "Beginner",
-            }),
-          }
-        );
+        const response = await fetch("https://rwhmdthc-5000.inc1.devtunnels.ms/quiz-generator", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            topic: "Learning English from Telugu",
+            num_questions: 5,
+            difficulty: "Beginner",
+          }),
+        });
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
         const data: Question[] = await response.json();
         setQuizData(data);
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("An unknown error occurred.");
-        }
+        setError(err instanceof Error ? err.message : "An unknown error occurred.");
       } finally {
         setLoading(false);
       }
-      
     };
 
     fetchQuizData();
-
-    // Commenting out the sample useEffect
-    // const mockData: Question[] = [
-    //   {
-    //     question_number: 1,
-    //     question: "Translate the word 'tree' into Telugu.",
-    //     options: ["A) చెట్టు", "B) పూలు", "C) కాపురం", "D) ఇల్లు"],
-    //     answer: "A) చెట్టు",
-    //   },
-    //   // Add more mock data here...
-    // ];
-    // setQuizData(mockData);
-    // setLoading(false);
   }, []);
 
   const handleOptionChange = (option: string) => {
     setUserAnswers({
       ...userAnswers,
-      [quizData[currentQuestionIndex].question_number]: option,
+      [quizData[currentQuestionIndex].question_number]: option.trim(),
     });
   };
 
@@ -118,27 +95,23 @@ const QuizGenerator: React.FC = () => {
 
   const router = useRouter();
   const handleBackToMain = () => {
-    router.push("/"); // Replace with navigation logic if using a router
+    router.push("/");
   };
 
   const calculateScore = () => {
     let totalScore = 0;
     quizData.forEach((question) => {
-      const userAnswer = userAnswers[question.question_number];
-      if (userAnswer === question.answer) {
+      const userAnswer = userAnswers[question.question_number]?.trim();
+      const correctAnswer = question.answer.trim();
+      if (userAnswer === correctAnswer) {
         totalScore += 1;
       }
     });
     setScore(totalScore);
   };
 
-  if (loading) {
-    return <div className="loading">Loading quiz questions...</div>;
-  }
-
-  if (error) {
-    return <div className="error">Error: {error}</div>;
-  }
+  if (loading) return <div>Loading quiz questions...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className={`min-h-screen bg-gray-100 ${inter.className}`}>
@@ -146,67 +119,46 @@ const QuizGenerator: React.FC = () => {
       <div className="quiz-container">
         <h1 className="quiz-title">Quiz: Learning English from Telugu</h1>
         {score === null ? (
-          <div className="quiz-question">
+          <div>
             <h2>
-              {quizData[currentQuestionIndex].question_number}.{" "}
-              {quizData[currentQuestionIndex].question}
+              {quizData[currentQuestionIndex].question_number}. {quizData[currentQuestionIndex].question}
             </h2>
             <div className="quiz-options">
-              {quizData[currentQuestionIndex].options.map((option) => (
-                <label
-                  key={option}
-                  className={`quiz-option ${
-                    userAnswers[quizData[currentQuestionIndex].question_number] ===
-                    option
-                      ? "selected-option"
-                      : ""
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name={`question-${quizData[currentQuestionIndex].question_number}`}
-                    value={option}
-                    onChange={() => handleOptionChange(option)}
-                    checked={
-                      userAnswers[
-                        quizData[currentQuestionIndex].question_number
-                      ] === option
-                    }
-                  />
-                  {option}
-                </label>
-              ))}
+              {quizData[currentQuestionIndex].options.map((option) => {
+                const isSelected = userAnswers[quizData[currentQuestionIndex].question_number] === option.trim();
+                const isCorrect = quizData[currentQuestionIndex].answer.trim() === option.trim();
+                return (
+                  <label
+                    key={option}
+                    className={`quiz-option ${isSelected ? "selected-option" : ""} ${isCorrect ? "correct-option" : ""}`}
+                  >
+                    <input
+                      type="radio"
+                      name={`question-${quizData[currentQuestionIndex].question_number}`}
+                      value={option}
+                      onChange={() => handleOptionChange(option)}
+                      checked={isSelected}
+                    />
+                    {option}
+                  </label>
+                );
+              })}
             </div>
-            <div className="quiz-navigation">
-              <button
-                onClick={handlePrevQuestion}
-                className="quiz-prev-btn"
-                disabled={currentQuestionIndex === 0}
-              >
-                Previous
-              </button>
-              <button onClick={handleNextQuestion} className="quiz-next-btn">
-                {currentQuestionIndex < quizData.length - 1
-                  ? "Next"
-                  : "Submit"}
+            <div>
+              <button onClick={handlePrevQuestion} disabled={currentQuestionIndex === 0}>Previous</button>
+              <button onClick={handleNextQuestion}>
+                {currentQuestionIndex < quizData.length - 1 ? "Next" : "Submit"}
               </button>
             </div>
           </div>
         ) : (
-          <div className="quiz-result">
-            <h2>
-              Your Score: {score}/{quizData.length}
-            </h2>
-            <div className="quiz-result-buttons">
-              <button onClick={handleRetakeQuiz} className="quiz-retake-btn">
-                Retake Quiz
-              </button>
-              <button onClick={handleBackToMain} className="quiz-back-btn">
-                Back to Main
-              </button>
-            </div>
+          <div>
+            <h2>Your Score: {score}/{quizData.length}</h2>
+            <button onClick={handleRetakeQuiz}>Retake Quiz</button>
+            <button onClick={handleBackToMain}>Back to Main</button>
           </div>
         )}
+      </div>
         <style jsx>{`
         :root {
           --primary-color: #0ff1ce;
@@ -351,8 +303,11 @@ const QuizGenerator: React.FC = () => {
         .quiz-back-btn:hover {
           background: #3498db;
         }
+          .correct-option {
+          background: green !important;
+          color: white !important;
+        }
       `}</style>
-      </div>
     </div>
   );
 };

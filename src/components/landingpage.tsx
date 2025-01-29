@@ -150,7 +150,7 @@ export default function LandingPage() {
               >
                 QUIZ
               </Button>
-              <Button
+              {/* <Button
                 onClick={handleVoiceNavigation}
                 style={{
                   padding: "12px 24px",
@@ -162,7 +162,7 @@ export default function LandingPage() {
                 }}
               >
                 Voice Input Practice
-              </Button>
+              </Button> */}
               <Button
                 onClick={handleTextMatchingNavigation}
                 style={{
