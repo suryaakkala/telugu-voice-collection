@@ -116,12 +116,8 @@ const VoiceInputPractice: React.FC = () => {
           formData.append("audio", audioBlob);
 
           const sentence = sentences[currentIndex];
-          formData.append(
-            "data",
-            JSON.stringify({
-              English: sentence.English,
-            })
-          );
+          formData.append("data", sentence.English);
+
 
           // Send audio and sentence data to the backend
           try {
@@ -136,8 +132,8 @@ const VoiceInputPractice: React.FC = () => {
             console.log("Full API Response:", result); // Debugging log
             if (result.status === "success") {
               // Process transcription and word colors
-              const words = sentence.English.split(" ").map((word, index) => {
-                const color = result[`word${index + 1}`] || "black";
+              const words = sentence.English.split(" ").map((word) => {
+                const color = result.words?.[word] || "black"; // Access the word from the response
                 console.log(`Word: ${word}, Color: ${color}`); // Debugging log
                 return `<span style="color: ${color}">${word}</span>`;
               });
