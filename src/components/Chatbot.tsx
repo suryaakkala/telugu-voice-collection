@@ -72,7 +72,7 @@ const Chatbot: React.FC = () => {
     formData.append('audio', file);
 
     try {
-      const response = await fetch('https://rwhmdthc-5000.inc1.devtunnels.ms/get-response', {
+      const response = await fetch('https://rwhmdthc-5000.inc1.devtunnels.ms/audio_trans', {
         method: 'POST',
         body: formData,
       });
@@ -80,8 +80,8 @@ const Chatbot: React.FC = () => {
 
       const botMessage: Message = {
         text: data.message,
-        audioUrl: data.audio,
-        explanation: data.explanation, // Include explanation field
+        // audioUrl: data.audio,
+        // explanation: data.explanation, // Include explanation field
         sender: 'bot',
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -107,13 +107,13 @@ const Chatbot: React.FC = () => {
 
         mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
         mediaRecorder.onstop = async () => {
-          const audioBlob = new Blob(chunks, { type: 'audio/webm' });
+          const audioBlob = new Blob(chunks, { type: 'audio/wav' });
           const formData = new FormData();
-          formData.append('type', 'audio');
-          formData.append('audio', audioBlob, 'recorded_audio.webm'); // Ensure correct key is used
+          // formData.append('type', 'audio');
+          formData.append('audio', audioBlob, 'recorded_audio.wav'); // Ensure correct key is used
         
           try {
-            const response = await fetch('https://rwhmdthc-5000.inc1.devtunnels.ms/get-response', { 
+            const response = await fetch('https://rwhmdthc-5000.inc1.devtunnels.ms/audio_trans', { 
               method: 'POST',
               body: formData,
             });
@@ -125,9 +125,28 @@ const Chatbot: React.FC = () => {
               text: data.data,
               audioUrl: data.audio,
               explanation: data.explanation, 
-              sender: 'bot',
+              sender: 'user',
             };
             setMessages((prevMessages) => [...prevMessages, botMessage]);
+            const audiorespastext = new FormData();
+            audiorespastext.append('type', 'text');
+            audiorespastext.append('query_message', data.data);
+            
+            // Send the response to another API
+            const secondApiResponse = await fetch('https://rwhmdthc-5000.inc1.devtunnels.ms/get-response', {
+              method: 'POST',
+              body: audiorespastext ,
+            });
+
+            const secondApiData = await secondApiResponse.json();
+            console.log('Second API Response:', secondApiData);
+            const botMessage2: Message = {
+              text: secondApiData.data,
+              // audioUrl: data.audio,
+              explanation: secondApiData.explanation, 
+              sender: 'bot',
+            };
+            setMessages((prevMessages) => [...prevMessages, botMessage2]);
           } catch (error) {
             console.error('Error sending audio:', error);
           }
