@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "next/navigation";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 const Header: React.FC = () => {
@@ -45,7 +44,6 @@ const QuizGenerator: React.FC = () => {
     router.push("/");
   };
 
-
   useEffect(() => {
     const fetchQuizData = async () => {
       setLoading(true);
@@ -64,6 +62,7 @@ const QuizGenerator: React.FC = () => {
           throw new Error(`Error: ${response.statusText}`);
         }
         const data: Question[] = await response.json();
+        console.log("Fetched quiz data:", data); // Debugging statement
         setQuizData(data);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : "An unknown error occurred.");
@@ -76,6 +75,7 @@ const QuizGenerator: React.FC = () => {
   }, []);
 
   const handleOptionChange = (option: string) => {
+    console.log("Selected option:", option); // Debugging statement
     setUserAnswers({
       ...userAnswers,
       [quizData[currentQuestionIndex].question_number]: option.trim(),
@@ -102,16 +102,17 @@ const QuizGenerator: React.FC = () => {
     setScore(null);
   };
 
-
   const calculateScore = () => {
     let totalScore = 0;
     quizData.forEach((question) => {
       const userAnswer = userAnswers[question.question_number]?.trim();
       const correctAnswer = question.answer.trim();
+      console.log(`Question ${question.question_number}: userAnswer=${userAnswer}, correctAnswer=${correctAnswer}`); // Debugging statement
       if (userAnswer === correctAnswer) {
         totalScore += 1;
       }
     });
+    console.log("Total score:", totalScore); // Debugging statement
     setScore(totalScore);
   };
 
