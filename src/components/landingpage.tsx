@@ -180,7 +180,7 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
-      <footer
+{/*       <footer
         style={{
           display: "flex",
           flexDirection: "column",
@@ -189,19 +189,19 @@ export default function LandingPage() {
           borderTop: "2px solid #dee2e6",
           background: "linear-gradient(90deg, #e9ecef, #f8f9fa)",
         }}
-      >
+{/*       >
         <p style={{ fontSize: "14px", color: "#6c757d" }}>
           &copy; 2024 Telugu Chat Bot. All rights reserved.
-        </p>
-        <nav style={{ display: "flex", gap: "16px", marginLeft: "auto", fontSize: "14px" }}>
+        </p> */}
+{/*         <nav style={{ display: "flex", gap: "16px", marginLeft: "auto", fontSize: "14px" }}>
           <Link href="#" style={{ textDecoration: "none", color: "#007bff" }}>
             Terms of Service
           </Link>
           <Link href="#" style={{ textDecoration: "none", color: "#007bff" }}>
             Privacy
           </Link>
-        </nav>
-      </footer>
+        </nav> */}
+      </footer> */}
     </div>
   );
 }
