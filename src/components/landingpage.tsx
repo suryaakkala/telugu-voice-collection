@@ -8,6 +8,10 @@ import { Button } from "@/components/ui/button";
 export default function LandingPage() {
   const router = useRouter();
 
+  const handleTypingPracticeNavigation = () => {
+    router.push("/TypingPractice");
+  };
+
   const handleChatbotNavigation = () => {
     router.push("/chatbot");
   };
@@ -175,6 +179,19 @@ export default function LandingPage() {
                 }}
               >
                 Text Matcher
+              </Button>
+              <Button
+                onClick={handleTypingPracticeNavigation}
+                style={{
+                  padding: "12px 24px",
+                  fontSize: "18px",
+                  background: "linear-gradient(90deg, #007bff, #0056b3)",
+                  color: "white",
+                  borderRadius: "16px",
+                  boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
+                }}
+              >
+                Typing Practice
               </Button>
             </div>
           </div>
