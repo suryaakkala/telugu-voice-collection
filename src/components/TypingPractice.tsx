@@ -1,31 +1,28 @@
 import { useState } from "react";
 import { useId } from "react";
 import { Send } from "lucide-react";
-import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "next/navigation";
-import { Inter } from "next/font/google";
 
 
-const inter = Inter({ subsets: ["latin"] });
 
-const Header: React.FC = () => {
-  return (
-    <header
-      style={{
-        width: "100%",
-        backgroundColor: "white",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "8px 16px",
-      }}
-    >
-      <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
-      <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
-    </header>
-  );
-};
+// const Header: React.FC = () => {
+//   return (
+//     <header
+//       style={{
+//         width: "100%",
+//         backgroundColor: "white",
+//         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+//         display: "flex",
+//         alignItems: "center",
+//         justifyContent: "space-between",
+//         padding: "8px 16px",
+//       }}
+//     >
+//       <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
+//       <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
+//     </header>
+//   );
+// };
 
 
 const fetchApi = "https://telugu-chatbot.herokuapp.com/api/get-sentences";
