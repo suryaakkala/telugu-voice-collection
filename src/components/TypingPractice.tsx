@@ -1,6 +1,31 @@
 import { useState } from "react";
 import { useId } from "react";
 import { Send } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
+import { useRouter } from "next/navigation";
+import { Inter } from "next/font/google";
+
+
+const inter = Inter({ subsets: ["latin"] });
+
+const Header: React.FC = () => {
+  return (
+    <header
+      style={{
+        width: "100%",
+        backgroundColor: "white",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "8px 16px",
+      }}
+    >
+      <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
+      <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
+    </header>
+  );
+};
 
 
 const fetchApi = "https://telugu-chatbot.herokuapp.com/api/get-sentences";
@@ -20,6 +45,11 @@ const TypingPractice = () => {
   const [error, setError] = useState<string | null>(null);
   const id = useId();
 
+    const router = useRouter();
+    const handleBackToMain = () => {
+      router.push("/");
+    };
+  
   const fetchSentence = async () => {
     setLoading(true);
     setError(null);
@@ -65,6 +95,43 @@ const TypingPractice = () => {
       setLoading(false);
     }
   };
+
+  // if (loading)
+  //     return (
+  //     <div>
+  //       <div className="center-screen">
+  //         <Spinner variant="pinwheel" className="w-12 h-12 text-blue-500" />
+  //         <p className="loading-text">Loading Quiz Please Wait...</p>
+  //       </div>
+  //       <style jsx>{`
+  //         .center-screen {
+  //           position: fixed;
+  //           top: 50%;
+  //           left: 50%;
+  //           transform: translate(-50%, -50%);
+  //           display: flex;
+  //           flex-direction: column;
+  //           align-items: center;
+  //           justify-content: center;
+  //           width: 100vw;
+  //           height: 100vh;
+  //           background: rgba(255, 255, 255, 0.8); /* Optional: Light overlay */
+  //         }
+  //         .loading-text {
+  //           margin-top: 1rem;
+  //           font-size: 1.25rem;
+  //           color: #000;
+  //           font-family: 'Arial', sans-serif; /* Change the font family */
+  //           font-weight: bold; /* Make the text bold */
+  //         }
+  //       `}</style>
+  //     </div>
+  //     );
+
+  if (error) {
+    handleBackToMain();
+    return null; // Ensure the component stops rendering
+  }
 
   return (
     <div className="container">
