@@ -1,6 +1,6 @@
 import LandingPage from "@/components/landingpage";
 import type { Metadata } from "next";
-
+import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +32,7 @@ const Header: React.FC = () => {
 export default function Home() {
   return (
     <div className={`min-h-screen bg-gray-100 ${inter.className}`}>
+      <Analytics/>
       <Header />
       <main className="flex items-center justify-center h-full">
         <LandingPage />
