@@ -31,17 +31,20 @@ export default function LandingPage() {
   return (
     <div
       style={{
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
         fontFamily: "Arial, sans-serif",
         backgroundColor: "#f8f9fa",
         color: "#343a40",
+        overflow: "hidden",
       }}
     >
       <header
         style={{
-          padding: "0 24px",
+          width: "98%",
+          padding: "0 16.5px",
           height: "60px",
           display: "flex",
           alignItems: "center",
@@ -102,17 +105,17 @@ export default function LandingPage() {
           </Link>
         </nav>
       </header>
-      <main style={{ flex: 1 }}>
+      <main style={{ flex: 1, overflow: "hidden" }}>
         <section
           style={{
             width: "100%",
-            padding: "48px 0",
+            padding: "100px 0",
             textAlign: "center",
             background: "linear-gradient(180deg, #e9ecef, #f8f9fa)",
           }}
         >
           <div
-            style={{ maxWidth: "700px", margin: "0 auto", padding: "0 16px" }}
+            style={{ margin: "0 auto", padding: "0 16px" }}
           >
             <h1
               style={{

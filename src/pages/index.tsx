@@ -13,7 +13,7 @@ const Header: React.FC = () => {
   return (
     <header
       style={{
-        width: "100%",
+        width: "97.85%",
         backgroundColor: "white",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         display: "flex",
@@ -31,10 +31,10 @@ const Header: React.FC = () => {
 
 export default function Home() {
   return (
-    <div className={`min-h-screen bg-gray-100 ${inter.className}`}>
+    <div className={` ${inter.className}`} style={{ overflow: "hidden", display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <Analytics/>
       <Header />
-      <main className="flex items-center justify-center h-full">
+      <main style={{ flex: 1, overflow: "hidden" }}>
         <LandingPage />
       </main>
     </div>
