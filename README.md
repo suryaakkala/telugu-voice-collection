@@ -25,7 +25,3 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the chat pages by modifying `src/components/`. The page auto-updates as you edit the file.
 
-## TODO:
-1. Modify css for ` Text Matcher `.
-2. need to add activities `SpeakingPracticeActivity`.
-3. remove debugging lines.
