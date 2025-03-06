@@ -327,12 +327,14 @@ const Chatbot: React.FC = () => {
             {isRecording ? 'Stop' : 'Record'}
           </button>
           <input type="file" onChange={handleFileUpload} className="file-input" style={{
+            padding: '10px 15px',
             border: 'none',
-            fontSize: '14px',
-            padding: '10px',
             borderRadius: '8px',
-            backgroundColor: '#DFF6FF',
+            fontSize: '14px',
             cursor: 'pointer',
+            backgroundColor: isDarkMode ? '#ffffff' : '#47B5FF',
+            color: isDarkMode ? '#000000' : 'white',
+            transition: 'background-color 0.3s',
           }} />
         </div>
       </div>
