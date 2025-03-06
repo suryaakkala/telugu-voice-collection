@@ -64,7 +64,7 @@ export default function LandingPage() {
             marginLeft: "16px",
           }}
         >
-          <span style={{ fontWeight: "bold", fontSize: "28px" }}>
+          <span style={{ fontWeight: "bold", fontSize: "auto" }}>
             తెలుగు Chat Bot
           </span>
         </Link>
@@ -117,7 +117,10 @@ export default function LandingPage() {
           }}
         >
           <div
-            style={{ margin: "0 auto", padding: "0 16px" }}
+            style={{ 
+              margin: "0 auto", 
+              padding: "0 16px" 
+            }}
           >
             <h1
               style={{
@@ -132,7 +135,12 @@ export default function LandingPage() {
             <p style={{ color: "#343a40", fontSize: "20px", marginBottom: "32px" }}>
               Experience seamless conversations in Telugu with our intuitive AI chatbot.
             </p>
-            <div style={{ display: "flex", justifyContent: "center", gap: "16px" }}>
+            <div style={{ 
+              display: "flex", 
+              justifyContent: "center", 
+              gap: "10px",
+              flexWrap: "wrap", 
+              }}>
               <Button
                 onClick={handleChatbotNavigation}
                 style={{
