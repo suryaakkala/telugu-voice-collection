@@ -13,7 +13,6 @@ const Header: React.FC<{ toggleTheme: () => void, isDarkMode: boolean }> = ({ to
   return (
     <header
       style={{
-        // width: "100%",
         backgroundColor: isDarkMode ? "#333333" : "#DFF6FF",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         display: "flex",
@@ -21,7 +20,6 @@ const Header: React.FC<{ toggleTheme: () => void, isDarkMode: boolean }> = ({ to
         width: "100%",
         alignItems: "center",
         justifyContent: "space-between",
-        // padding: "8px 16px",
         position: "fixed",
         top: 0,
         left: 0,

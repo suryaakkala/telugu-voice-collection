@@ -13,13 +13,17 @@ const Header: React.FC = () => {
   return (
     <header
       style={{
-        width: "97.85%",
-        backgroundColor: "white",
+        backgroundColor: "#DFF6FF",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         display: "flex",
+        flexDirection: "row",
+        width: "100%",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "8px 16px",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 1000,
       }}
     >
       <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
@@ -31,12 +35,10 @@ const Header: React.FC = () => {
 
 export default function Home() {
   return (
-    <div className={` ${inter.className}`} style={{ overflow: "hidden", display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    <div className={` ${inter.className}`} style={{ overflow: "hidden", display: "flex", flexDirection: "column" }}>
       <Analytics/>
       <Header />
-      <main style={{ flex: 1, overflow: "hidden" }}>
-        <LandingPage />
-      </main>
+      <LandingPage />
     </div>
   );
 }

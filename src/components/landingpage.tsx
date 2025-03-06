@@ -31,26 +31,27 @@ export default function LandingPage() {
   return (
     <div
       style={{
+        marginTop: "40px",
         width: "100%",
         display: "flex",
         flexDirection: "column",
-        minHeight: "100vh",
         fontFamily: "Arial, sans-serif",
         backgroundColor: "#f8f9fa",
-        color: "#343a40",
-        overflow: "hidden",
+        color: "#343a40"
       }}
     >
       <header
         style={{
-          width: "98%",
-          padding: "0 16.5px",
+          width: "100%",
+          // padding: "0 16.5px",
           height: "60px",
           display: "flex",
           alignItems: "center",
           borderBottom: "2px solid #dee2e6",
           background: "linear-gradient(90deg, #007bff, #0056b3)",
           color: "white",
+          marginRight: "auto",
+          marginLeft: "auto",
         }}
       >
         <Link
@@ -60,6 +61,7 @@ export default function LandingPage() {
             alignItems: "center",
             textDecoration: "none",
             color: "white",
+            marginLeft: "16px",
           }}
         >
           <span style={{ fontWeight: "bold", fontSize: "28px" }}>
@@ -99,13 +101,13 @@ export default function LandingPage() {
               textDecoration: "none",
               color: "white",
               cursor: "pointer",
+              marginRight: "16px",
             }}
           >
             Contact
           </Link>
         </nav>
       </header>
-      <main style={{ flex: 1, overflow: "hidden" }}>
         <section
           style={{
             width: "100%",
@@ -199,29 +201,6 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-      </main>
-{/*       <footer
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "8px",
-          padding: "24px 16px",
-          borderTop: "2px solid #dee2e6",
-          background: "linear-gradient(90deg, #e9ecef, #f8f9fa)",
-        }}
-       >
-        <p style={{ fontSize: "14px", color: "#6c757d" }}>
-          &copy; 2024 Telugu Chat Bot. All rights reserved.
-        </p> 
-        <nav style={{ display: "flex", gap: "16px", marginLeft: "auto", fontSize: "14px" }}>
-          <Link href="#" style={{ textDecoration: "none", color: "#007bff" }}>
-            Terms of Service
-          </Link>
-          <Link href="#" style={{ textDecoration: "none", color: "#007bff" }}>
-            Privacy
-          </Link>
-        </nav> 
-      </footer> */}
     </div>
   );
 }
