@@ -13,13 +13,15 @@ const Header: React.FC<{ toggleTheme: () => void, isDarkMode: boolean }> = ({ to
   return (
     <header
       style={{
-        width: "98%",
+        // width: "100%",
         backgroundColor: isDarkMode ? "#333333" : "#DFF6FF",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         display: "flex",
+        flexDirection: "row",
+        width: "100%",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "8px 16px",
+        // padding: "8px 16px",
         position: "fixed",
         top: 0,
         left: 0,
@@ -218,7 +220,7 @@ const Chatbot: React.FC = () => {
         width: '100%',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        height: '100vh',
+        height: '97.8vh',
         margin: 0,
         overflow: 'hidden', // Prevent body scroll
       }}
