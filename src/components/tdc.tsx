@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Inter } from "next/font/google";
 import { Spinner } from "@/components/ui/spinner";
-import "./tdc.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,6 +11,25 @@ const Header: React.FC = () => {
     <header className="header">
       <img src="/klu.png" alt="Left Logo" className="logo" />
       <img src="/klug.png" alt="Right Logo" className="logo" />
+      <style jsx>{`
+        .header {
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          position: fixed;
+          top: 0;
+          z-index: 1000;
+          background: #004E64;
+          padding: 10px;
+        }
+        .logo {
+          margin-left: 10px;
+          margin-right: 10px;
+          height: 40px;
+        }
+      `}</style>
     </header>
   );
 };
@@ -32,7 +50,7 @@ const TDC: React.FC = () => {
   const fetchSentences = async () => {
     try {
       const response = await fetch(
-        "https://rwhmdthc-5000.inc1.devtunnels.ms/telugu-data",
+        "https://rwhmdthc-5000.inc1.devtunnels.ms/telugu-sentences",
         {
           method: "POST",
           headers: {
@@ -142,7 +160,7 @@ const TDC: React.FC = () => {
     return (
       <div className="loading-container">
         <div className="loading-content">
-          <Spinner variant="pinwheel" style={{ width: "3rem", height: "3rem", color: "#3b82f6" }} />
+          <Spinner variant="pinwheel" style={{ width: "3rem", height: "3rem", color: "rgb(222,222,222)" }} />
           <p className="loading-text">Loading Sentences Please Wait...</p>
         </div>
       </div>
@@ -150,7 +168,7 @@ const TDC: React.FC = () => {
   }
 
   return (
-    <div className={`container ${inter.className}`}>
+    <div className="container">
       <Header />
       <div className="main-content">
         <h1 className="title">Voice Input Practice</h1>
@@ -193,6 +211,72 @@ const TDC: React.FC = () => {
           </div>
         )}
       </div>
+      <style jsx>{`
+        .container {
+          background-color: #fff9ad;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-top: 60px;
+        }
+        .title{
+          font-size: 1.5rem;
+          font-weight: bold;
+          text-align: center;
+          font-family: Lato, sans-serif;
+          color: #033a49;
+          margin-bottom: 20px;
+        }
+        .main-content {
+          min-height: 250px;
+          max-width: 42rem;
+          background-color: #547AA5;
+          padding: 24px;
+          border-radius: 8px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          margin-bottom: 20px;
+        }
+        .sentence-container {
+          padding: 16px;
+          background-color: #D72638;
+          border-radius: 8px;
+          margin-bottom: 20px;
+        }
+        .sentence {
+          font-size: 1.125rem;
+          color: #fbff00;
+        }
+        .controls {
+          display: flex;
+          justify-content: space-between;
+          gap: 10px;
+        }
+        .button {
+          padding: 8px 16px;
+          border-radius: 6px;
+          border: none;
+          color: white;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        }
+        .button-primary {
+          background-color: #004E64;
+          color: #fff;
+        }
+        .button:disabled {
+          background-color: #d1d5db;
+          color: #3f3737;
+          cursor: not-allowed;
+        }
+        .button-record {
+          background-color: #77e547;
+          color: #000;
+        }
+        .button-recording {
+          background-color: #ef4444;
+          color: #fff;
+        }
+      `}</style>
     </div>
   );
 };
