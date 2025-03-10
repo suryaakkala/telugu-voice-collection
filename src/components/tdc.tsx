@@ -222,7 +222,7 @@ const TDC: React.FC = () => {
           font-weight: bold;
           text-align: center;
           font-family: Lato, sans-serif;
-          color: #033a49;
+          color:rgb(1, 37, 47);
           margin-bottom: 20px;
         }
         .main-content {
