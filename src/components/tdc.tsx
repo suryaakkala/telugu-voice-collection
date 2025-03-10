@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Inter } from "next/font/google";
 import { Spinner } from "@/components/ui/spinner";
 
-const inter = Inter({ subsets: ["latin"] });
 
 const Header: React.FC = () => {
   return (
