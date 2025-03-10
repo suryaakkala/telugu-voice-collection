@@ -28,6 +28,10 @@ export default function LandingPage() {
     router.push("/TextMatching");
   };
 
+  const handleTDCNavigation = () => {
+    router.push("/tdc");
+  };
+
   return (
     <div
       style={{
@@ -205,6 +209,19 @@ export default function LandingPage() {
                 }}
               >
                 Typing Practice
+              </Button>
+              <Button
+                onClick={handleTDCNavigation}
+                style={{
+                  padding: "12px 24px",
+                  fontSize: "18px",
+                  background: "linear-gradient(90deg, #007bff, #0056b3)",
+                  color: "white",
+                  borderRadius: "16px",
+                  boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
+                }}
+              >
+                Contribute Your Voice 😊
               </Button>
             </div>
           </div>
