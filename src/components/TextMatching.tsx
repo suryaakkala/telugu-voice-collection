@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Inter } from "next/font/google";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "next/navigation";
-
-const inter = Inter({ subsets: ["latin"] });
+import "@/styles/globals.css";
 
 const Header: React.FC = () => {
   return (
     <header
       style={{
-        width: "100%",
-        backgroundColor: "white",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        backgroundColor: "#023047", // Dark Blue
         display: "flex",
+        flexDirection: "row",
+        width: "100%",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "8px 16px",
+        position: "fixed",
+        padding: "5px",
+        top: 0,
+        left: 0,
+        zIndex: 1000,
       }}
     >
       <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
@@ -176,7 +179,8 @@ const TextMatchingActivity: React.FC = () => {
     }
 
   return (
-    <div className={`min-h-screen bg-gray-100 ${inter.className}`}>
+    <>
+    <div className="textmatch" >
       <Header />
       <div className="text-matching-container">
         <h1 className="activity-title">Text Matching Activity</h1>
@@ -201,8 +205,9 @@ const TextMatchingActivity: React.FC = () => {
                   value={selectedMatches.get(pair["Column A"]) || ""}
                   onChange={(e) => handleMatch(pair["Column A"], e.target.value)}
                   title={`Match for ${pair["Column A"]}`}
+                  className="input-field"
                 >
-                  <option value="" disabled>
+                  <option value="" disabled >
                     Select
                   </option>
                   {columnB.map((item) => (
@@ -218,11 +223,11 @@ const TextMatchingActivity: React.FC = () => {
             <h2>Column B</h2>
             {columnB.map((item) => (
               <div
-                key={item}
-                className={`item ${
-                  Array.from(selectedMatches.values()).includes(item) ? "selected" : ""
+              key={item}
+              className={`item ${
+                Array.from(selectedMatches.values()).includes(item) ? "selected" : ""
                 }`}
-              >
+                >
                 {item}
               </div>
             ))}
@@ -231,17 +236,30 @@ const TextMatchingActivity: React.FC = () => {
         <button className="submit-btn" onClick={checkAnswers}>
           Submit
         </button>
-        <style jsx>{`
+        <style jsx global>{`
+          body {
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+            box-sizing: border-box;
+            height: 100vh;
+          }
+        .textmatch {
+          margin: 0;
+          background: rgb(0 255 137 / 25%);
+          height: 100vh;
+          padding-top: 60px;
+        }
         .text-matching-container {
           font-family: Arial, sans-serif;
           max-width: 800px;
-          margin: 20px auto;
+          margin: 0 auto;
           padding: 20px;
           border: 1px solid #ccc;
           border-radius: 8px;
-          background: #f9f9f9;
+          background: #219EBC;
         }
         .activity-title {
+          color: #023047;
           font-size: 24px;
           margin-bottom: 20px;
           text-align: center;
@@ -250,8 +268,10 @@ const TextMatchingActivity: React.FC = () => {
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
           gap: 20px;
+          color: #023047;
         }
         .column {
+          color: #023047;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -259,29 +279,48 @@ const TextMatchingActivity: React.FC = () => {
         .column h2 {
           font-size: 18px;
           margin-bottom: 10px;
+          color : #023047;
         }
         .item {
           padding: 10px;
           margin: 5px 0;
-          border: 1px solid #ccc;
           border-radius: 4px;
-          background: #fff;
+          background: #FB8500;
           cursor: pointer;
           text-align: center;
         }
         .item.selected {
-          background: #007bff;
-          color: white;
+          background: #00458f;
+          color: #ffb703;
         }
         .matching-input select {
           margin: 5px 0;
           padding: 5px;
           width: 100%;
         }
+        .matching-row{
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+        }
+        .input-field {
+          padding: 8px;
+          border-radius: 4px;
+          background-color:rgba(251, 134, 0, 0.73);
+          color: #023047;
+          font-size: 16px;
+          width: 100%;
+        }
+        .input-field:focus {
+          outline: none;
+          border-color: #FFB703;
+          background-color: #fb8500;
+        }
         .submit-btn {
           margin-top: 20px;
           padding: 10px 20px;
-          background: #28a745;
+          background: #023047;
           color: white;
           border: none;
           border-radius: 4px;
@@ -296,6 +335,7 @@ const TextMatchingActivity: React.FC = () => {
         }
         .sr-only {
           position: absolute;
+          Background: #023047;
           width: 1px;
           height: 1px;
           padding: 0;
@@ -307,6 +347,7 @@ const TextMatchingActivity: React.FC = () => {
       `}</style>
       </div>
     </div>
+    </>
   );
 };
 

@@ -2,6 +2,7 @@ import LandingPage from "@/components/landingpage";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
+import "@/styles/globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -35,10 +36,17 @@ const Header: React.FC = () => {
 
 export default function Home() {
   return (
-    <div className={` ${inter.className}`} style={{ overflow: "hidden", display: "flex", flexDirection: "column" }}>
+    <>
+    <style jsx global>{`
+        body {
+          margin: 0; /* Remove default margin */
+          padding: 0; /* Remove default padding */
+          box-sizing: border-box;
+        }
+      `}</style>
       <Analytics/>
       <Header />
       <LandingPage />
-    </div>
+    </>
   );
 }

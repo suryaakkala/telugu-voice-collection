@@ -208,8 +208,15 @@ const Chatbot: React.FC = () => {
   };
 
   return (
+    <>
+      <style jsx global>{`
+        body {
+          margin: 0; /* Remove default margin */
+          padding: 0; /* Remove default padding */
+          box-sizing: border-box;
+        }
+      `}</style>
     <div
-      className={`min-h-screen ${inter.className}`}
       style={{
         backgroundColor: isDarkMode ? '#1a202c' : '#f7fafc',
         color: isDarkMode ? '#ffffff' : '#000000',
@@ -218,7 +225,7 @@ const Chatbot: React.FC = () => {
         width: '100%',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        height: '97.8vh',
+        height: '100vh',
         margin: 0,
         overflow: 'hidden', // Prevent body scroll
       }}
@@ -337,6 +344,7 @@ const Chatbot: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

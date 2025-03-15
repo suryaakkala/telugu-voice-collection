@@ -1,9 +1,17 @@
 import TypingPractice from "@/components/TypingPractice";
+import "@/styles/globals.css";
 
 export default function TypingMatchingActivityPage() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <>
+      <style jsx global>{`
+        body {
+          margin: 0; /* Remove default margin */
+          padding: 0; /* Remove default padding */
+          box-sizing: border-box;
+        }
+      `}</style>
       <TypingPractice />
-    </div>
+    </>
   );
 }

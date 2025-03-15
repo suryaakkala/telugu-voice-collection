@@ -35,7 +35,6 @@ export default function LandingPage() {
   return (
     <div
       style={{
-        marginTop: "40px",
         width: "100%",
         display: "flex",
         flexDirection: "column",
@@ -43,9 +42,10 @@ export default function LandingPage() {
         backgroundColor: "#f8f9fa",
         color: "#343a40"
       }}
-    >
+      >
       <header
         style={{
+          marginTop: "40px",
           width: "100%",
           // padding: "0 16.5px",
           height: "60px",

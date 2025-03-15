@@ -1,10 +1,17 @@
 import VoiceInputPractice from "@/components/VoiceInputPractice";
-// import "../styles/globals.css";
+import "@/styles/globals.css";
 
 export default function VoiceInputPracticePage() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <>
+      <style jsx global>{`
+        body {
+          margin: 0; /* Remove default margin */
+          padding: 0; /* Remove default padding */
+          box-sizing: border-box;
+        }
+      `}</style>
       <VoiceInputPractice />
-    </div>
+    </>
   );
 }
