@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
-
+import "@/styles/globals.css";
 
 const Header: React.FC = () => {
   return (
@@ -20,7 +20,7 @@ const Header: React.FC = () => {
           top: 0;
           z-index: 1000;
           background: #004E64;
-          padding: 10px;
+          padding: 5px;
         }
         .logo {
           margin-left: 10px;
@@ -50,7 +50,7 @@ const TDC: React.FC = () => {
       const response = await fetch(
         "https://rwhmdthc-5000.inc1.devtunnels.ms/telugu-sentences",
         {
-          method: "POST",
+          method: " GET",
           headers: {
             "Content-Type": "application/json",
           },
@@ -76,7 +76,7 @@ const TDC: React.FC = () => {
         status: "success",
         data: [
           { Telugu: "హలో, నా పేరు జాన్." },
-          { Telugu: "నేను హైదరాబాద్ నుండి వచ్చాను." },
+          { Telugu: "నేను Hyderabad నుండి వచ్చాను." },
           { Telugu: "నాకు పుస్తకాలు చదవడం ఇష్టం." },
         ],
       };
@@ -166,6 +166,7 @@ const TDC: React.FC = () => {
   }
 
   return (
+    <>
     <div className="container">
       <Header />
       <div className="main-content">
@@ -209,13 +210,21 @@ const TDC: React.FC = () => {
           </div>
         )}
       </div>
-      <style jsx>{`
+      </div>
+      <style jsx global>{`
+        body {
+          margin: 0; /* Remove default margin */
+          padding: 0; /* Remove default padding */
+          box-sizing: border-box;
+          height: 100vh;
+        }
         .container {
           background-color: #fff9ad;
           display: flex;
           flex-direction: column;
           align-items: center;
           padding-top: 60px;
+          height: 100%;
         }
         .title{
           font-size: 1.5rem;
@@ -275,7 +284,7 @@ const TDC: React.FC = () => {
           color: #fff;
         }
       `}</style>
-    </div>
+    </>
   );
 };
 
