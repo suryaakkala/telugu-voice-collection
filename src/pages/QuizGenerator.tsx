@@ -4,7 +4,7 @@ import "@/styles/globals.css";
 export default function QuizGeneratorPage() {
   return (
     <>
-    <style jsx>{`
+    <style jsx global>{`
         body {
           margin: 0; /* Remove default margin */
           padding: 0; /* Remove default padding */
