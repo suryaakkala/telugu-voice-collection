@@ -1,9 +1,7 @@
 import LandingPage from "@/components/landingpage";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import { Inter } from "next/font/google";
 import "@/styles/globals.css";
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Telugu Chat Bot",

@@ -1,6 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { Inter } from "next/font/google";
-const inter = Inter({ subsets: ["latin"] });
 
 interface Message {
   text: string;
