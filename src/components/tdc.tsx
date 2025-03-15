@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
-import "@/styles/globals.css";
 
 const Header: React.FC = () => {
   return (
@@ -211,7 +210,7 @@ const TDC: React.FC = () => {
         )}
       </div>
       </div>
-      <style jsx global>{`
+      <style jsx >{`
         body {
           margin: 0; /* Remove default margin */
           padding: 0; /* Remove default padding */
