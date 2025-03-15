@@ -8,44 +8,67 @@ interface Message {
 }
 
 const Header: React.FC<{ toggleTheme: () => void, isDarkMode: boolean }> = ({ toggleTheme, isDarkMode }) => {
-  return (
-    <header
-      style={{
-        backgroundColor: isDarkMode ? "#333333" : "#DFF6FF",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        display: "flex",
-        flexDirection: "row",
-        width: "100%",
-        alignItems: "center",
-        justifyContent: "space-between",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: 1000,
-      }}
-    >
-      <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
-      <button
-        onClick={toggleTheme}
-        style={{
-          padding: "10px 15px",
-          border: "none",
-          borderRadius: "8px",
-          fontSize: "14px",
-          cursor: "pointer",
-          backgroundColor: isDarkMode ? "#ffffff" : "#47B5FF",
-          color: isDarkMode ? "#000000" : "white",
-          transition: "background-color 0.3s",
-        }}
-        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = isDarkMode ? "#cccccc" : "#256D85")}
-        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = isDarkMode ? "#ffffff" : "#47B5FF")}
-        onMouseDown={(e) => (e.currentTarget.style.backgroundColor = isDarkMode ? "#999999" : "#06283D")}
-        onMouseUp={(e) => (e.currentTarget.style.backgroundColor = isDarkMode ? "#cccccc" : "#256D85")}
-      >
-        {isDarkMode ? 'Light Mode' : 'Dark Mode'}
-      </button>
-      <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
-    </header>
+    return (
+    <>
+      <header className="header">
+        <img src="/klu.png" alt="Left Logo" className="logo" />
+        <button
+          className="theme-toggle-button"
+          onClick={toggleTheme}
+          onMouseOver={(e) =>
+            (e.currentTarget.style.backgroundColor = isDarkMode
+              ? "#cccccc"
+              : "#256D85")
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.backgroundColor = isDarkMode
+              ? "#ffffff"
+              : "#47B5FF")
+          }
+          onMouseDown={(e) =>
+            (e.currentTarget.style.backgroundColor = isDarkMode
+              ? "#999999"
+              : "#06283D")
+          }
+          onMouseUp={(e) =>
+            (e.currentTarget.style.backgroundColor = isDarkMode
+              ? "#cccccc"
+              : "#256D85")
+          }
+        >
+          {isDarkMode ? "Light Mode" : "Dark Mode"}
+        </button>
+        <img src="/klug.png" alt="Right Logo" className="logo" />
+      </header>
+      <style jsx>{`
+        .header {
+          background-color: ${isDarkMode ? "#333333" : "#DFF6FF"};
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          align-items: center;
+          justify-content: space-between;
+          position: fixed;
+          top: 0;
+          left: 0;
+          z-index: 1000;
+        }
+        .logo {
+          height: 40px;
+        }
+        .theme-toggle-button {
+          padding: 10px 15px;
+          border: none;
+          border-radius: 8px;
+          font-size: 14px;
+          cursor: pointer;
+          background-color: ${isDarkMode ? "#ffffff" : "#47B5FF"};
+          color: ${isDarkMode ? "#000000" : "white"};
+          transition: background-color 0.3s;
+        }
+      `}</style>
+    </>
   );
 };
 
@@ -205,143 +228,143 @@ const Chatbot: React.FC = () => {
     setMessages((prevMessages) => [...prevMessages, explanationMessage]);
   };
 
-  return (
+    return (
     <>
-      <style jsx global>{`
-        body {
-          margin: 0; /* Remove default margin */
-          padding: 0; /* Remove default padding */
-          box-sizing: border-box;
-        }
-      `}</style>
-    <div
-      style={{
-        backgroundColor: isDarkMode ? '#1a202c' : '#f7fafc',
-        color: isDarkMode ? '#ffffff' : '#000000',
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        height: '100vh',
-        margin: 0,
-        overflow: 'hidden', // Prevent body scroll
-      }}
-    >
-      <Header toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
-      <div className="chat-container" style={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        maxWidth: '800px',
-        border: '1px solid #e0e0e0',
-        borderRadius: '12px',
-        padding: '15px',
-        backgroundColor: isDarkMode ? '#333333' : '#ffffff',
-        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-        flex: 1,
-        marginTop: '45px', // Adjust for header height
-        marginBottom: 0,
-        overflow: 'hidden', // Prevent container scroll
-      }}>
-        <div className="messages" style={{
-          flex: 1,
-          overflowY: 'auto',
-          padding: '10px',
-          border: '1px solid #e0e0e0',
-          borderRadius: '8px',
-          backgroundColor: isDarkMode ? '#444444' : '#f7f7f7',
-        }}>
-          {messages.map((msg, index) => (
-            <div key={index} className={`message ${msg.sender}`} style={{
-              marginBottom: '12px',
-              padding: '8px 12px',
-              borderRadius: '8px',
-              alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-              textAlign: msg.sender === 'user' ? 'right' : 'left',
-              color: '#ffffff',
-              backgroundColor: msg.sender === 'user' ? '#47B5FF' : '#256D85',
-            }}>
-              <p>{msg.text}</p>
-              {msg.audioUrl && <audio controls src={msg.audioUrl}></audio>}
-              {msg.explanation && msg.sender === 'bot' && (
-                <button
-                  className="explain-button"
-                  onClick={() => showExplanation(index)}
-                  style={{
-                    marginTop: '5px',
-                    padding: '5px 10px',
-                    border: 'none',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    backgroundColor: '#06283D',
-                    color: 'white',
-                    fontSize: '12px',
-                  }}
-                >
-                  Explain
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="input-container" style={{
-          display: 'flex',
-          gap: '10px',
-          flexWrap: 'wrap',
-        }}>
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type a message..."
-            style={{
-              flex: 1,
-              padding: '10px',
-              border: '1px solid #ccc',
-              borderRadius: '8px',
-              fontSize: '14px',
-              backgroundColor: isDarkMode ? '#444444' : '#ffffff',
-              color: isDarkMode ? '#ffffff' : '#000000',
-            }}
-          />
-          <button onClick={sendMessage} style={{
-            padding: '10px 15px',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '14px',
-            cursor: 'pointer',
-            backgroundColor: isDarkMode ? '#ffffff' : '#47B5FF',
-            color: isDarkMode ? '#000000' : 'white',
-            transition: 'background-color 0.3s',
-          }}>
-            Send
-          </button>
-          <button onClick={toggleRecording} style={{
-            padding: '10px 15px',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '14px',
-            cursor: 'pointer',
-            backgroundColor: isDarkMode ? '#ffffff' : '#47B5FF',
-            color: isDarkMode ? '#000000' : 'white',
-            transition: 'background-color 0.3s',
-          }}>
-            {isRecording ? 'Stop' : 'Record'}
-          </button>
-          <input type="file" onChange={handleFileUpload} className="file-input" style={{
-            padding: '10px 15px',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '14px',
-            cursor: 'pointer',
-            backgroundColor: isDarkMode ? '#ffffff' : '#47B5FF',
-            color: isDarkMode ? '#000000' : 'white',
-            transition: 'background-color 0.3s',
-          }} />
+      <div className="chatbot-container">
+        <Header toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+        <div className="chat-container">
+          <div className="messages">
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`message ${msg.sender}`}
+                style={{
+                  alignSelf: msg.sender === "user" ? "flex-end" : "flex-start",
+                  textAlign: msg.sender === "user" ? "right" : "left",
+                }}
+              >
+                <p>{msg.text}</p>
+                {msg.audioUrl && <audio controls src={msg.audioUrl}></audio>}
+                {msg.explanation && msg.sender === "bot" && (
+                  <button
+                    className="explain-button"
+                    onClick={() => showExplanation(index)}
+                  >
+                    Explain
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="input-container">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type a message..."
+            />
+            <button onClick={sendMessage}>Send</button>
+            <button onClick={toggleRecording}>
+              {isRecording ? "Stop" : "Record"}
+            </button>
+            <input type="file" onChange={handleFileUpload} className="file-input" />
+          </div>
         </div>
       </div>
-    </div>
+      <style jsx>{`
+        .chatbot-container {
+          background-color: ${isDarkMode ? "#1a202c" : "#f7fafc"};
+          color: ${isDarkMode ? "#ffffff" : "#000000"};
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          align-items: center;
+          justify-content: flex-start;
+          height: 100vh;
+          margin: 0;
+          overflow: hidden; /* Prevent body scroll */
+        }
+        .chat-container {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          max-width: 800px;
+          border: 1px solid #e0e0e0;
+          border-radius: 12px;
+          padding: 15px;
+          background-color: ${isDarkMode ? "#333333" : "#ffffff"};
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          flex: 1;
+          margin-top: 45px; /* Adjust for header height */
+          margin-bottom: 0;
+          overflow: hidden; /* Prevent container scroll */
+        }
+        .messages {
+          flex: 1;
+          overflow-y: auto;
+          padding: 10px;
+          border: 1px solid #e0e0e0;
+          border-radius: 8px;
+          background-color: ${isDarkMode ? "#444444" : "#f7f7f7"};
+        }
+        .message {
+          margin-bottom: 12px;
+          padding: 8px 12px;
+          border-radius: 8px;
+          color: #ffffff;
+          background-color: ${isDarkMode ? "#256D85" : "#47B5FF"};
+        }
+        .message.user {
+          background-color: #47b5ff;
+        }
+        .message.bot {
+          background-color: #256d85;
+        }
+        .explain-button {
+          margin-top: 5px;
+          padding: 5px 10px;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          background-color: #06283d;
+          color: white;
+          font-size: 12px;
+        }
+        .input-container {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+        .input-container input[type="text"] {
+          flex: 1;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 14px;
+          background-color: ${isDarkMode ? "#444444" : "#ffffff"};
+          color: ${isDarkMode ? "#ffffff" : "#000000"};
+        }
+        .input-container button {
+          padding: 10px 15px;
+          border: none;
+          border-radius: 8px;
+          font-size: 14px;
+          cursor: pointer;
+          background-color: ${isDarkMode ? "#ffffff" : "#47B5FF"};
+          color: ${isDarkMode ? "#000000" : "white"};
+          transition: background-color 0.3s;
+        }
+        .file-input {
+          padding: 10px 15px;
+          border: none;
+          border-radius: 8px;
+          font-size: 14px;
+          cursor: pointer;
+          background-color: ${isDarkMode ? "#ffffff" : "#47B5FF"};
+          color: ${isDarkMode ? "#000000" : "white"};
+          transition: background-color 0.3s;
+        }
+      `}</style>
     </>
   );
 };

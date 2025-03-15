@@ -4,24 +4,28 @@ import { useRouter } from "next/navigation";
 
 const Header: React.FC = () => {
   return (
-    <header
-      style={{
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        backgroundColor: "#023047", // Dark Blue
-        display: "flex",
-        flexDirection: "row",
-        width: "100%",
-        alignItems: "center",
-        justifyContent: "space-between",
-        position: "fixed",
-        padding: "5px",
-        top: 0,
-        left: 0,
-        zIndex: 1000,
-      }}
-    >
-      <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
-      <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
+    <header className="header">
+      <img src="/klu.png" alt="Left Logo" className="logo" />
+      <img src="/klug.png" alt="Right Logo" className="logo" />
+      <style jsx>{`
+        .header {
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          position: fixed;
+          top: 0;
+          z-index: 1000;
+          background: #023047;
+          padding: 5px;
+        }
+        .logo {
+          margin-left: 10px;
+          margin-right: 10px;
+          height: 40px;
+        }
+      `}</style>
     </header>
   );
 };
