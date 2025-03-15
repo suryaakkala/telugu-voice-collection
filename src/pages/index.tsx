@@ -1,7 +1,7 @@
 import LandingPage from "@/components/landingpage";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import "@/styles/globals.css";
+// import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Telugu Chat Bot",
@@ -35,7 +35,7 @@ const Header: React.FC = () => {
 export default function Home() {
   return (
     <>
-    <style jsx global>{`
+    <style jsx>{`
         body {
           margin: 0; /* Remove default margin */
           padding: 0; /* Remove default padding */
