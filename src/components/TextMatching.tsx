@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "next/navigation";
-import "@/styles/globals.css";
 
 const Header: React.FC = () => {
   return (
@@ -236,7 +235,7 @@ const TextMatchingActivity: React.FC = () => {
         <button className="submit-btn" onClick={checkAnswers}>
           Submit
         </button>
-        <style jsx global>{`
+        <style jsx>{`
           body {
             margin: 0; /* Remove default margin */
             padding: 0; /* Remove default padding */
