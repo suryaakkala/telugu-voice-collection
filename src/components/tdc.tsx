@@ -47,7 +47,7 @@ const TDC: React.FC = () => {
   const fetchSentences = async () => {
     try {
       const response = await fetch(
-        "https://qpc28cj1-5000.inc1.devtunnels.ms/telugu-sentences",
+        "https://qpc28cj1-8000.inc1.devtunnels.ms/telugu-sentences",
         {
           method: "GET",
           headers: {
@@ -120,7 +120,7 @@ const TDC: React.FC = () => {
 
           try {
             await fetch(
-              "https://qpc28cj1-5000.inc1.devtunnels.ms/telugu-data-collection",
+              "https://qpc28cj1-8000.inc1.devtunnels.ms/telugu-data-collection",
               { 
                 method: "POST",
                 body: formData,
