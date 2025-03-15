@@ -49,7 +49,7 @@ const QuizGenerator: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch("https://qpc28cj1-5000.inc1.devtunnels.ms/quiz-generator", {
+        const response = await fetch("https://qpc28cj1-8000.inc1.devtunnels.ms/quiz-generator", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
