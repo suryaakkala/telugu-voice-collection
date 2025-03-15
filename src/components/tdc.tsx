@@ -47,21 +47,23 @@ const TDC: React.FC = () => {
   const fetchSentences = async () => {
     try {
       const response = await fetch(
-        "https://rwhmdthc-5000.inc1.devtunnels.ms/telugu-sentences",
+        "https://qpc28cj1-5000.inc1.devtunnels.ms/telugu-sentences",
         {
-          method: " GET",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
+          // body: JSON.stringify({}), // No body needed for GET requests
         }
       );
+      console.log(response);
 
       if (!response.ok) {
         throw new Error(`Failed to fetch sentences: ${response.statusText}`);
       }
 
       const data = await response.json();
-
+      console.log(data);  
       if (data.status === "success") {
         if (!Array.isArray(data.data) || !data.data.length) {
           throw new Error("No sentences available.");
@@ -71,6 +73,8 @@ const TDC: React.FC = () => {
         throw new Error(data.message || "Error fetching sentences.");
       }
     } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "An unknown error occurred.");
       const mockData = {
         status: "success",
         data: [
@@ -116,8 +120,8 @@ const TDC: React.FC = () => {
 
           try {
             await fetch(
-              "https://rwhmdthc-5000.inc1.devtunnels.ms/telugu-data-collection",
-              {
+              "https://qpc28cj1-5000.inc1.devtunnels.ms/telugu-data-collection",
+              { 
                 method: "POST",
                 body: formData,
               }

@@ -74,7 +74,7 @@ const Chatbot: React.FC = () => {
       formData.append('type', 'text');
       formData.append('query_message', input);
 
-      const response = await fetch('https://rwhmdthc-5000.inc1.devtunnels.ms/get-response', {
+      const response = await fetch('https://qpc28cj1-5000.inc1.devtunnels.ms/get-response', {
         method: 'POST',
         body: formData,
       });
@@ -102,7 +102,7 @@ const Chatbot: React.FC = () => {
     formData.append('audio', file);
 
     try {
-      const response = await fetch('https://rwhmdthc-5000.inc1.devtunnels.ms/audio_trans', {
+      const response = await fetch('https://qpc28cj1-5000.inc1.devtunnels.ms/audio_trans', {
         method: 'POST',
         body: formData,
       });
@@ -143,7 +143,7 @@ const Chatbot: React.FC = () => {
           formData.append('audio', audioBlob, 'recorded_audio.wav'); // Ensure correct key is used
         
           try {
-            const response = await fetch('https://rwhmdthc-5000.inc1.devtunnels.ms/audio_trans', { 
+            const response = await fetch('https://qpc28cj1-5000.inc1.devtunnels.ms/audio_trans', { 
               method: 'POST',
               body: formData,
             });
@@ -163,7 +163,7 @@ const Chatbot: React.FC = () => {
             audiorespastext.append('query_message', data.data);
             
             // Send the response to another API
-            const secondApiResponse = await fetch('https://rwhmdthc-5000.inc1.devtunnels.ms/get-response', {
+            const secondApiResponse = await fetch('https://qpc28cj1-5000.inc1.devtunnels.ms/get-response', {
               method: 'POST',
               body: audiorespastext ,
             });
