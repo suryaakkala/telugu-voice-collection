@@ -150,7 +150,7 @@ const QuizGenerator: React.FC = () => {
   
   if (error) {
     handleBackToMain();
-    return null; // Ensure the component stops rendering
+    return null;
   }
 
   return (
