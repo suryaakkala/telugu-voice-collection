@@ -1,5 +1,5 @@
 import QuizGenerator from "@/components/QuizGenerator";
-// import "../styles/globals.css";
+import "@/styles/globals.css";
 
 export default function QuizGeneratorPage() {
   return (
