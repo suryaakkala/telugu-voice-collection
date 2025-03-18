@@ -27,4 +27,4 @@ You can start editing the chat pages by modifying `src/components/`. The page au
 
 ## Demo url:
 
-[Demo1](https://chatbot-eight-eta-79.vercel.app/) or [Demo2](https://chatbot-ayrus2222-gmailcoms-projects.vercel.app/) or [demo3](https://chatbot-git-main-ayrus2222-gmailcoms-projects.vercel.app/)
+[Click here to launch Demo](https://chatbot-eight-eta-79.vercel.app/)
