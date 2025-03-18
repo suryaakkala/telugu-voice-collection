@@ -32,6 +32,17 @@ class Star {
     this.x += this.vx;
     this.y += this.vy;
     
+    // Make stars slightly attracted to the mouse position
+    const dx = mouseX - this.x;
+    const dy = mouseY - this.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const attractionStrength = 0.05; // Adjust this value for stronger/weaker attraction
+
+    if (distance < 150) { // Only apply attraction within a certain radius
+      this.vx += (dx / distance) * attractionStrength;
+      this.vy += (dy / distance) * attractionStrength;
+    }
+
     // Flicker effect
     if (Math.random() < 0.02) {
       this.targetOpacity = Math.random();
