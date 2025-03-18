@@ -296,7 +296,7 @@ const Chatbot: React.FC = () => {
           background-color: ${isDarkMode ? "#333333" : "#ffffff"};
           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
           flex: 1;
-          margin-top: 45px; /* Adjust for header height */
+          margin-top: 50px; /* Adjust for header height */
           margin-bottom: 0;
           overflow: hidden; /* Prevent container scroll */
         }
