@@ -1,7 +1,6 @@
 import LandingPage from "@/components/landingpage";
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-// import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Telugu Chat Bot",
@@ -18,6 +17,8 @@ const Header: React.FC = () => {
         flexDirection: "row",
         width: "100%",
         alignItems: "center",
+        height: "38px",
+        padding: "4px 4px",
         justifyContent: "space-between",
         position: "fixed",
         top: 0,

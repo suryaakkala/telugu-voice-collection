@@ -49,6 +49,7 @@ const Header: React.FC<{ toggleTheme: () => void, isDarkMode: boolean }> = ({ to
           width: 100%;
           align-items: center;
           justify-content: space-between;
+          padding: 4px 4px;
           position: fixed;
           top: 0;
           left: 0;
