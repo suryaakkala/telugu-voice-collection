@@ -18,10 +18,10 @@ class Star {
   constructor(ctx: CanvasRenderingContext2D, width: number, height: number) {
     this.ctx = ctx;
     const angle = Math.random() * Math.PI * 2;
-    const speed = Math.random() * 2 + 1;
+    const speed = Math.random() * 1 + 0.5;
     this.x = width / 2;
     this.y = height / 2;
-    this.radius = Math.random() * 1.5;
+    this.radius = Math.random() * 2.5;
     this.vx = Math.cos(angle) * speed;
     this.vy = Math.sin(angle) * speed;
     this.opacity = 0;
@@ -36,7 +36,7 @@ class Star {
     const dx = mouseX - this.x;
     const dy = mouseY - this.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    const attractionStrength = 0.05; // Adjust this value for stronger/weaker attraction
+    const attractionStrength = 0.04; // Adjust this value for stronger/weaker attraction
 
     if (distance < 150) { // Only apply attraction within a certain radius
       this.vx += (dx / distance) * attractionStrength;
