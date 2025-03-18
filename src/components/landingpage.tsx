@@ -58,6 +58,31 @@ class Star {
   }
 }
 
+const Header1: React.FC = () => {
+  return (
+    <header
+      style={{
+        backgroundColor: "#DFF6FF",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+        alignItems: "center",
+        height: "40px",
+        padding: "4px 4px",
+        justifyContent: "space-between",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 1000,
+      }}
+    >
+      <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
+      <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
+    </header>
+  );
+};
+
 export default function LandingPage() {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -133,8 +158,10 @@ export default function LandingPage() {
     };
   }, []);
 
+
+
   return (
-    <div style={{ position: 'relative', width: '100%', minHeight: '100vh' }}>
+    <div style={{ position: 'relative', width: '100%' }}>
       <canvas
         ref={canvasRef}
         style={{
@@ -142,13 +169,14 @@ export default function LandingPage() {
           top: 0,
           left: 0,
           width: '100%',
-          height: '100%',
+          height: '100vh',
           zIndex: 0,
           pointerEvents: 'none',
         }}
       />
       
       <div style={{ position: 'relative', zIndex: 1 }}>
+        <Header1 />
         <header
           style={{
             marginTop: "40px",

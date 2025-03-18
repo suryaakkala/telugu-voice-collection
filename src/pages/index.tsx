@@ -7,30 +7,30 @@ export const metadata: Metadata = {
   description: "Experience the power of conversing in Telugu with our advanced AI chatbot.",
 };
 
-const Header: React.FC = () => {
-  return (
-    <header
-      style={{
-        backgroundColor: "#DFF6FF",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        display: "flex",
-        flexDirection: "row",
-        width: "100%",
-        alignItems: "center",
-        height: "38px",
-        padding: "4px 4px",
-        justifyContent: "space-between",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: 1000,
-      }}
-    >
-      <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
-      <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
-    </header>
-  );
-};
+// const Header: React.FC = () => {
+//   return (
+//     <header
+//       style={{
+//         backgroundColor: "#DFF6FF",
+//         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+//         display: "flex",
+//         flexDirection: "row",
+//         width: "100%",
+//         alignItems: "center",
+//         height: "40px",
+//         padding: "4px 4px",
+//         justifyContent: "space-between",
+//         position: "fixed",
+//         top: 0,
+//         left: 0,
+//         zIndex: 1000,
+//       }}
+//     >
+//       <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
+//       <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
+//     </header>
+//   );
+// };
 
 
 export default function Home() {
@@ -44,7 +44,7 @@ export default function Home() {
         }
       `}</style>
       <Analytics/>
-      <Header />
+      {/* <Header /> */}
       <LandingPage />
     </>
   );
