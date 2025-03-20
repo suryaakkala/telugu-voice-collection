@@ -129,11 +129,46 @@ const TypingPractice = () => {
     handleBackToMain();
     return null; // Ensure the component stops rendering
   }
-
+  
   return (
+    <div className="page1">
     <div className="container">
-      <style>
+      <p className="heading">Telugu Typing Practice</p>
+      <div className="text-center">
+        <p>Translate the given Telugu sentence into English:</p>
+        <p className="sentence">{teluguSentence || "Click below to get a sentence"}</p>
+        <button className="button" onClick={fetchSentence} disabled={loading}>
+          {loading ? "Loading..." : "Get Sentence"}
+        </button>
+      </div>
+      <label htmlFor={id}>Type the English equivalent here...</label>
+      <div className="input-container">
+        <input
+          id={id}
+          className="input"
+          placeholder="Type here..."
+          type="text"
+          value={englishInput}
+          onChange={(e) => setEnglishInput(e.target.value)}
+        />
+        <button className="send-button" aria-label="Submit" onClick={checkSentence}>
+          <Send size={16} strokeWidth={2} aria-hidden="true" />
+        </button>
+      </div>
+      {error && <p className="error">{error}</p>}
+      {feedback && (
+        <div className="feedback">
+          <p><strong>Correct Sentence:</strong> {feedback["correct sentence"]}</p>
+          <p><strong>Your Sentence:</strong> {feedback["your sentence"]}</p>
+          <p><strong>Status:</strong> {feedback.status}</p>
+        </div>
+      )}
+      </div>
+      <style jsx>
         {`
+          .page1 {
+            height: 100vh;
+          } 
           .container {
             display: flex;
             flex-direction: column;
@@ -195,36 +230,6 @@ const TypingPractice = () => {
           }
         `}
       </style>
-      <p className="heading">Telugu Typing Practice</p>
-      <div className="text-center">
-        <p>Translate the given Telugu sentence into English:</p>
-        <p className="sentence">{teluguSentence || "Click below to get a sentence"}</p>
-        <button className="button" onClick={fetchSentence} disabled={loading}>
-          {loading ? "Loading..." : "Get Sentence"}
-        </button>
-      </div>
-      <label htmlFor={id}>Type the English equivalent here...</label>
-      <div className="input-container">
-        <input
-          id={id}
-          className="input"
-          placeholder="Type here..."
-          type="text"
-          value={englishInput}
-          onChange={(e) => setEnglishInput(e.target.value)}
-        />
-        <button className="send-button" aria-label="Submit" onClick={checkSentence}>
-          <Send size={16} strokeWidth={2} aria-hidden="true" />
-        </button>
-      </div>
-      {error && <p className="error">{error}</p>}
-      {feedback && (
-        <div className="feedback">
-          <p><strong>Correct Sentence:</strong> {feedback["correct sentence"]}</p>
-          <p><strong>Your Sentence:</strong> {feedback["your sentence"]}</p>
-          <p><strong>Status:</strong> {feedback.status}</p>
-        </div>
-      )}
     </div>
   );
 };
