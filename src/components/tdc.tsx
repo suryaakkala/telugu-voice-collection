@@ -143,7 +143,7 @@ const TDC: React.FC = () => {
       mediaRecorder.start();
       setIsRecording(true);
     } catch (err) {
-      setError("Microphone access required for recording");
+      setError(err instanceof Error ? err.message : "Microphone access required for recording");
     }
   };
 
