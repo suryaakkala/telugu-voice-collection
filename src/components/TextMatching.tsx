@@ -21,8 +21,6 @@ const Header: React.FC = () => {
           padding: 5px;
         }
         .logo {
-          margin-left: 10px;
-          margin-right: 10px;
           height: 40px;
         }
       `}</style>
@@ -239,13 +237,8 @@ const TextMatchingActivity: React.FC = () => {
         <button className="submit-btn" onClick={checkAnswers}>
           Submit
         </button>
+        </div>
         <style jsx>{`
-          body {
-            margin: 0; /* Remove default margin */
-            padding: 0; /* Remove default padding */
-            box-sizing: border-box;
-            height: 100vh;
-          }
         .textmatch {
           margin: 0;
           background: rgb(0 255 137 / 25%);
@@ -348,7 +341,6 @@ const TextMatchingActivity: React.FC = () => {
           border: 0;
         }
       `}</style>
-      </div>
     </div>
     </>
   );

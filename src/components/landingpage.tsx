@@ -60,25 +60,26 @@ class Star {
 
 const Header1: React.FC = () => {
   return (
-    <header
-      style={{
-        backgroundColor: "#DFF6FF",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        display: "flex",
-        flexDirection: "row",
-        width: "100%",
-        alignItems: "center",
-        height: "40px",
-        padding: "4px 4px",
-        justifyContent: "space-between",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: 1000,
-      }}
-    >
-      <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
-      <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
+    <header className="header">
+      <img src="/klu.png" alt="Left Logo" className="logo" />
+      <img src="/klug.png" alt="Right Logo" className="logo" />
+      <style jsx>{`
+        .header {
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          position: fixed;
+          top: 0;
+          z-index: 1000;
+          background: #023047;
+          padding: 5px;
+        }
+        .logo {
+          height: 40px;
+        }
+      `}</style>
     </header>
   );
 };
@@ -161,123 +162,28 @@ export default function LandingPage() {
 
 
   return (
-    <div style={{ position: 'relative', width: '100%' }}>
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100vh',
-          zIndex: 0,
-          pointerEvents: 'none',
-        }}
-      />
-      
-      <div style={{ position: 'relative', zIndex: 1 }}>
+    <div className="container">
+      <canvas className="canvas" ref={canvasRef} />
+      <div className="content">
         <Header1 />
-        <header
-          style={{
-            marginTop: "40px",
-            width: "100%",
-            height: "45px",
-            display: "flex",
-            alignItems: "center",
-            borderBottom: "2px solid #dee2e6",
-            background: "linear-gradient(90deg, #007bff, #0056b3)",
-            color: "white",
-            marginRight: "auto",
-            marginLeft: "auto",
-          }}
-        >
-          <Link
-            href="#"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              textDecoration: "none",
-              color: "white",
-              marginLeft: "16px",
-            }}
-          >
-            <span style={{ fontWeight: "bold", fontSize: "auto" }}>
-              తెలుగు Chat Bot
-            </span>
+        <header className="header">
+          <Link href="#" className="logo-link">
+            <span className="logo-text">తెలుగు Chat Bot</span>
           </Link>
-          <nav style={{ marginLeft: "auto", display: "flex", gap: "16px" }}>
-            <Link
-              href="#features"
-              style={{
-                fontSize: "16px",
-                fontWeight: "500",
-                textDecoration: "none",
-                color: "white",
-                cursor: "pointer",
-              }}
-            >
-              Features
-            </Link>
-            <Link
-              href="#about"
-              style={{
-                fontSize: "16px",
-                fontWeight: "500",
-                textDecoration: "none",
-                color: "white",
-                cursor: "pointer",
-              }}
-            >
-              About
-            </Link>
-            <Link
-              href="#contact"
-              style={{
-                fontSize: "16px",
-                fontWeight: "500",
-                textDecoration: "none",
-                color: "white",
-                cursor: "pointer",
-                marginRight: "16px",
-              }}
-            >
-              Contact
-            </Link>
+          <nav className="nav">
+            <Link href="#features" className="nav-link">Features</Link>
+            <Link href="#about" className="nav-link">About</Link>
+            <Link href="#contact" className="nav-link contact-link">Contact</Link>
           </nav>
         </header>
-
-        <section
-          style={{
-            width: "100%",
-            padding: "100px 0",
-            textAlign: "center",
-            background: "transparent",
-          }}
-        >
-          <div style={{ margin: "0 auto", padding: "0 16px" }}>
-            <h1 style={{
-              fontSize: "50px",
-              fontWeight: "bold",
-              marginBottom: "16px",
-              color: "#007bff",
-              textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
-            }}>
-              తెలుగు Chat Bot
-            </h1>
-            <p style={{ 
-              color: "#e9ecef", 
-              fontSize: "20px", 
-              marginBottom: "32px",
-              textShadow: "1px 1px 2px rgba(0,0,0,0.5)"
-            }}>
+  
+        <section className="hero">
+          <div className="hero-content">
+            <h1 className="hero-title">తెలుగు Chat Bot</h1>
+            <p className="hero-description">
               Experience seamless conversations in Telugu with our intuitive AI chatbot.
             </p>
-            <div style={{ 
-              display: "flex", 
-              justifyContent: "center", 
-              gap: "10px",
-              flexWrap: "wrap", 
-            }}>
+            <div className="button-group">
               {[
                 { label: "Start Chat", handler: handleChatbotNavigation },
                 { label: "QUIZ", handler: handleQuizNavigation },
@@ -289,15 +195,11 @@ export default function LandingPage() {
                 <Button
                   key={index}
                   onClick={button.handler}
+                  variant="default"
+                  className="menu-button"
                   style={{
-                    padding: "12px 24px",
-                    fontSize: "18px",
-                    background: "linear-gradient(90deg, #007bff, #0056b3)",
-                    color: "white",
-                    borderRadius: "16px",
-                    boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
-                    backdropFilter: "blur(4px)",
-                    border: "1px solid rgba(255,255,255,0.1)",
+                    background: 'linear-gradient(90deg, #007bff, #0056b3)',
+                    border: '1px solid rgba(255,255,255,0.1)',
                   }}
                 >
                   {button.label}
@@ -307,6 +209,119 @@ export default function LandingPage() {
           </div>
         </section>
       </div>
+  
+      <style jsx>{`
+        .container {
+          position: relative;
+          width: 100%;
+          height: 100vh;
+        }
+        
+        .canvas {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          z-index: 0;
+          pointer-events: none;
+        }
+        
+        .content {
+          position: relative;
+          z-index: 1;
+        }
+        
+        .header {
+          margin-top: 50px;
+          padding: 0 10px;
+          width: 100%;
+          height: 45px;
+          display: flex;
+          align-items: center;
+          background: linear-gradient(90deg, #007bff, #0056b3);
+          color: white;
+        }
+        
+        .logo-link {
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          color: white;
+          margin-left: 16px;
+        }
+        
+        .logo-text {
+          font-weight: bold;
+          font-size: auto;
+        }
+        
+        .nav {
+          margin-left: auto;
+          display: flex;
+          gap: 16px;
+        }
+        
+        .nav-link {
+          font-size: 16px;
+          font-weight: 500;
+          text-decoration: none;
+          color: white;
+          cursor: pointer;
+        }
+        
+        .contact-link {
+          margin-right: 16px;
+        }
+        
+        .hero {
+          width: 100%;
+          padding: 100px 0;
+          text-align: center;
+          background: transparent;
+        }
+        
+        .hero-content {
+          margin: 0 auto;
+          padding: 0 16px;
+        }
+        
+        .hero-title {
+          font-size: 50px;
+          font-weight: bold;
+          margin-bottom: 16px;
+          color: #007bff;
+          text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero-description {
+          color: #e9ecef;
+          font-size: 20px;
+          margin-bottom: 32px;
+          text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .button-group {
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+  
+        :global(.menu-button) {
+          padding: 12px 24px !important;
+          font-size: 18px !important;
+          border-radius: 16px !important;
+          box-shadow: 0px 4px 8px rgba(0,0,0,0.2) !important;
+          backdrop-filter: blur(4px) !important;
+          color: white !important;
+        }
+  
+        :global(.menu-button:hover) {
+          opacity: 0.9 !important;
+          transform: translateY(-4px);
+        }
+      `}</style>
     </div>
   );
 }

@@ -5,24 +5,31 @@ import { useRouter } from "next/navigation";
 
 
 
-// const Header: React.FC = () => {
-//   return (
-//     <header
-//       style={{
-//         width: "100%",
-//         backgroundColor: "white",
-//         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-//         display: "flex",
-//         alignItems: "center",
-//         justifyContent: "space-between",
-//         padding: "8px 16px",
-//       }}
-//     >
-//       <img src="/klu.png" alt="Left Logo" style={{ height: "40px" }} />
-//       <img src="/klug.png" alt="Right Logo" style={{ height: "40px" }} />
-//     </header>
-//   );
-// };
+const Header: React.FC = () => {
+  return (
+    <header className="header">
+      <img src="/klu.png" alt="Left Logo" className="logo" />
+      <img src="/klug.png" alt="Right Logo" className="logo" />
+      <style jsx>{`
+        .header {
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          position: fixed;
+          top: 0;
+          z-index: 1000;
+          background: #023047;
+          padding: 5px;
+        }
+        .logo {
+          height: 40px;
+        }
+      `}</style>
+    </header>
+  );
+};
 
 
 const fetchApi = "https://telugu-chatbot.herokuapp.com/api/get-sentences";
@@ -132,6 +139,7 @@ const TypingPractice = () => {
   
   return (
     <div className="page1">
+      <Header />
     <div className="container">
       <p className="heading">Telugu Typing Practice</p>
       <div className="text-center">

@@ -44,7 +44,6 @@ export default function Home() {
         }
       `}</style>
       <Analytics/>
-      {/* <Header /> */}
       <LandingPage />
     </>
   );
