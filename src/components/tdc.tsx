@@ -297,6 +297,7 @@ const TDC: React.FC = () => {
           flex-wrap: wrap;
         }
         .sr-only{
+          color: #fff;
           align-items: center;
           display: flex;
         }  
@@ -308,6 +309,7 @@ const TDC: React.FC = () => {
           min-width: 200px;
         }
         .speed-control {
+          color: #fff;
           flex: 2;
           display: flex;
           align-items: center;
@@ -329,7 +331,7 @@ const TDC: React.FC = () => {
           appearance: none;
           width: 16px;
           height: 16px;
-          background: #004E64; /* Thumb color */
+          background:rgb(255, 255, 255); /* Thumb color */
           border-radius: 50%;
           cursor: pointer;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -339,7 +341,7 @@ const TDC: React.FC = () => {
         .speed-slider::-moz-range-thumb {
           width: 16px;
           height: 16px;
-          background: #004E64; /* Thumb color */
+          background: #fbff00; /* Thumb color */
           border-radius: 50%;
           cursor: pointer;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -347,7 +349,7 @@ const TDC: React.FC = () => {
         }
         
         .speed-slider::-webkit-slider-runnable-track {
-          background: linear-gradient(to right,rgb(0, 255, 0),rgb(255, 0, 0));
+          background: linear-gradient(to right,rgba(0, 255, 0, 0.7),rgb(255, 0, 0, 0.7));
           height: 8px;
           border-radius: 5px;
         }
