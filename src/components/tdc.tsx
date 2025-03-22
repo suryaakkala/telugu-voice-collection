@@ -4,16 +4,26 @@ import React, { useState, useRef, useEffect } from "react";
 import { Spinner } from "@/components/ui/spinner";
 
 const DISTRICTS = [
-  "Adilabad", "Anantapur", "Chittoor", "East Godavari", "Guntur", 
-  "Hyderabad", "Jagtial", "Jangaon", "Jayashankar Bhupalpally", 
-  "Jogulamba Gadwal", "Kamareddy", "Karimnagar", "Khammam", 
-  "Kumuram Bheem", "Mahabubabad", "Mahabubnagar", "Mancherial", 
-  "Medak", "Medchal", "Mulugu", "Nagarkurnool", "Nalgonda", 
-  "Narayanpet", "Nellore", "Nirmal", "Nizamabad", "Peddapalli", 
-  "Rajanna Sircilla", "Ranga Reddy", "Sangareddy", "Siddipet", 
-  "Suryapet", "Vikarabad", "Wanaparthy", "Warangal Rural", 
-  "Warangal Urban", "Yadadri Bhuvanagiri"
-];
+  "Adilabad", "Anakapalli", "Ananthapuramu","Annamayya",
+  "Bapatla", "Bhadradri Kothagudem",
+  "Chittoor",
+  "Dr. B.R. Ambedkar Konaseema",
+  "East Godavari", "Eluru",
+  "Guntur",
+  "Hanamkonda", "Hyderabad",
+  "Jagtial", "Jangaon", "Jayashankar Bhupalpally", "Jogulamba Gadwal",
+  "Kakinada", "Kamareddy", "Karimnagar", "Khammam", "Komaram Bheem Asifabad", "Krishna", "Kurnool",
+  "Mahabubabad", "Mahabubnagar", "Mancherial", "Medak","Medchal-Malkajgiri","Mulugu",
+  "Nalgonda","Nandyal","Nagarkurnool","Narayanpet","Nirmal","Nizamabad","NTR",
+  "Palnadu","Parvathipuram Manyam","Peddapalli","Prakasam",
+  "Rajanna Sircilla","Rangareddy",
+  "Sangareddy","Siddipet","Sri Potti Sriramulu Nellore","Srikakulam","Suryapet",
+  "Tirupati",
+  "Visakhapatnam","Vizianagaram","Vikarabad",
+  "Wanaparthy","Warangal","West Godavari",
+  "Yadadri Bhuvanagiri","YSR Annamayya"
+]
+
 
 const Header: React.FC = () => {
   return (
